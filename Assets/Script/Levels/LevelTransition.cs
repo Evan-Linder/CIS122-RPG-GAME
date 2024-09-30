@@ -14,23 +14,35 @@ public class LevelTransition : MonoBehaviour
             collision.transform.position = playerStartPosition;
 
             // Switch to the appropriate camera based on the target level
-            if (targetLevel == "Farm")
+            if (targetLevel == "Home")
             {
                 cameraSwitcher.SwitchCamera(0); 
             }
-            else if (targetLevel == "Store")
+            else if (targetLevel == "DownStairsHouse")
             {
                 cameraSwitcher.SwitchCamera(1); 
             }
 
-            else if (targetLevel == "Battlefield")
+            else if (targetLevel == "UpStairsHouse")
             {
                 cameraSwitcher.SwitchCamera(2);
             }
 
-            else if (targetLevel == "InsideStore")
+            else if (targetLevel == "Farm")
             {
                 cameraSwitcher.SwitchCamera(3);
+            }
+            else if (targetLevel == "Store")
+            {
+                cameraSwitcher.SwitchCamera(4);
+            }
+            else if (targetLevel == "InsideStore")
+            {
+                cameraSwitcher.SwitchCamera(5);
+            }
+            else if (targetLevel == "Battlefield")
+            {
+                cameraSwitcher.SwitchCamera(6);
             }
 
         }
