@@ -10,7 +10,7 @@ public class LevelTransition : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Move the player to the specified start position
+            // move the player to the specified start position
             collision.transform.position = playerStartPosition;
 
             // Switch to the appropriate camera based on the target level
