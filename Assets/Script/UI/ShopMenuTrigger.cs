@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShopKeeperTrigger : MonoBehaviour
 {
-    public GameObject shopMenu; // Reference to the shop menu UI
+    public GameObject shopMenu; 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

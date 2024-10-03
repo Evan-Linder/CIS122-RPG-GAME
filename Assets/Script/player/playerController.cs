@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class playerScript : MonoBehaviour
 {
@@ -10,15 +11,23 @@ public class playerScript : MonoBehaviour
 
     public int direction;
     public float attackingCoolDown;
+    public int weaponInUse;
     public GameObject sword1;
+    public GameObject axe;
+    public GameObject bigSword;
+
+    public TextMeshProUGUI ActiveWeaponText; // Reference to TextMeshPro component
 
     // Initialize components
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
 
-        //find the child SpriteRenderer with the visible sprite
+        // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
+
+        // set active weapon text to hands.
+        UpdateWeaponDisplay("Hands");
     }
 
     // Update is called once per frame
@@ -30,7 +39,7 @@ public class playerScript : MonoBehaviour
             rb2d.constraints = RigidbodyConstraints2D.None;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            // Movement
+            // movement
             moveInput.x = Input.GetAxisRaw("Horizontal");
             moveInput.y = Input.GetAxisRaw("Vertical");
             moveInput.Normalize();
@@ -122,12 +131,54 @@ public class playerScript : MonoBehaviour
         }
         else
         {
-            // Reduce the cooldown over time
+            // reduce the cooldown over time
             attackingCoolDown -= Time.deltaTime;
             rb2d.velocity = Vector2.zero; // stop movement
         }
+
+        // Changing weapons
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            axe.SetActive(false);
+            sword1.SetActive(true);
+            bigSword.SetActive(false);
+            weaponInUse = 0;
+            UpdateWeaponDisplay("Slot1"); 
+        }
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            axe.SetActive(true);
+            sword1.SetActive(false);
+            bigSword.SetActive(false);
+            weaponInUse = 1; 
+            UpdateWeaponDisplay("Slot2"); 
+        }
+        else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            axe.SetActive(false);
+            sword1.SetActive(false);
+            bigSword.SetActive(true);
+            weaponInUse = 2; 
+            UpdateWeaponDisplay("Slot3"); 
+        }
+        else if (Input.GetKey(KeyCode.Alpha4))
+        {
+            sword1.SetActive(false);
+            axe.SetActive(false);
+            bigSword.SetActive(false);
+            weaponInUse = -1;
+            UpdateWeaponDisplay("Hands"); 
+        }
+    }
+
+    // Method to update the TextMeshPro display with the current weapon
+    void UpdateWeaponDisplay(string weapon)
+    {
+        ActiveWeaponText.text = "Active: " + weapon; // Update the text to reflect the selected weapon
     }
 }
+
+
 
 
 
