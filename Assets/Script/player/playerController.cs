@@ -9,7 +9,7 @@ public class playerScript : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     public int direction;
-    public float attackingCoolDown; // Cooldown period for attacking
+    public float attackingCoolDown;
     public GameObject sword1;
 
     // Initialize components
@@ -17,14 +17,14 @@ public class playerScript : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
 
-        // Find the child SpriteRenderer with the visible sprite
+        //find the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // If cooldown is over, allow movement and attacking
+        // if cooldown is over, allow movement and attacking
         if (attackingCoolDown <= 0)
         {
             rb2d.constraints = RigidbodyConstraints2D.None;
@@ -73,21 +73,21 @@ public class playerScript : MonoBehaviour
             // Idle animations
             if (moveInput.y == 0 && moveInput.x == 0)
             {
-                if (direction == 0)
+                if (direction == 0) // down
                 {
                     playerAnim.Play("playerIdleD");
                 }
-                if (direction == 1)
+                if (direction == 1) // right
                 {
                     playerAnim.Play("playerIdleLR");
                     spriteRenderer.flipX = false;
                 }
-                if (direction == 2)
+                if (direction == 2) // left
                 {
                     playerAnim.Play("playerIdleLR");
                     spriteRenderer.flipX = true;
                 }
-                if (direction == 3)
+                if (direction == 3) // up
                 {
                     playerAnim.Play("playerIdleU");
                 }
@@ -124,9 +124,7 @@ public class playerScript : MonoBehaviour
         {
             // Reduce the cooldown over time
             attackingCoolDown -= Time.deltaTime;
-
-            // Stop movement during cooldown (optional)
-            rb2d.velocity = Vector2.zero;
+            rb2d.velocity = Vector2.zero; // stop movement
         }
     }
 }
