@@ -1,91 +1,139 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class playerScript : MonoBehaviour
 {
     private Vector2 moveInput;
-    public float moveSpeed = 5f;
+    public float moveSpeed;
     public Rigidbody2D rb2d;
     public Animator playerAnim;
     public SpriteRenderer spriteRenderer;
 
     public int direction;
+    public float attackingCoolDown; // Cooldown period for attacking
+    public GameObject sword1;
 
-    // Start is called before the first frame update
+    // Initialize components
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>(); 
-        spriteRenderer = GetComponent<SpriteRenderer>(); 
+        rb2d = GetComponent<Rigidbody2D>();
+
+        // Find the child SpriteRenderer with the visible sprite
+        spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Movement input
-        moveInput.x = Input.GetAxisRaw("Horizontal"); // get horizontal input (A/D or Left/Right arrow keys)
-        moveInput.y = Input.GetAxisRaw("Vertical"); // Get vertical input (W/S or Up/Down arrow keys)
-        moveInput.Normalize(); //normalize to prevent faster diagonal movement
-
-        // Determine whether to move vertically or horizontally
-        if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+        // If cooldown is over, allow movement and attacking
+        if (attackingCoolDown <= 0)
         {
-            moveInput.y = 0; //zero out vertical movement
-            rb2d.velocity = moveInput * moveSpeed; // set horizontal velocity
+            rb2d.constraints = RigidbodyConstraints2D.None;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+            // Movement
+            moveInput.x = Input.GetAxisRaw("Horizontal");
+            moveInput.y = Input.GetAxisRaw("Vertical");
+            moveInput.Normalize();
+
+            if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+            {
+                moveInput.y = 0;
+                rb2d.velocity = moveInput * moveSpeed;
+            }
+            else
+            {
+                moveInput.x = 0;
+                rb2d.velocity = moveInput * moveSpeed;
+            }
+
+            // Walking animations
+            if (moveInput.y < 0)
+            {
+                playerAnim.Play("playerWalkD");
+                direction = 0;
+            }
+            else if (moveInput.x > 0)
+            {
+                playerAnim.Play("playerWalkLR");
+                direction = 1;
+                spriteRenderer.flipX = false;
+            }
+            else if (moveInput.x < 0)
+            {
+                playerAnim.Play("playerWalkLR");
+                direction = 2;
+                spriteRenderer.flipX = true;
+            }
+            else if (moveInput.y > 0)
+            {
+                playerAnim.Play("playerWalkU");
+                direction = 3;
+            }
+
+            // Idle animations
+            if (moveInput.y == 0 && moveInput.x == 0)
+            {
+                if (direction == 0)
+                {
+                    playerAnim.Play("playerIdleD");
+                }
+                if (direction == 1)
+                {
+                    playerAnim.Play("playerIdleLR");
+                    spriteRenderer.flipX = false;
+                }
+                if (direction == 2)
+                {
+                    playerAnim.Play("playerIdleLR");
+                    spriteRenderer.flipX = true;
+                }
+                if (direction == 3)
+                {
+                    playerAnim.Play("playerIdleU");
+                }
+            }
+
+            // Attacking
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (direction == 0)
+                {
+                    playerAnim.Play("playerAttackD");
+                    attackingCoolDown = 0.4f;
+                }
+                if (direction == 1)
+                {
+                    playerAnim.Play("playerAttackR");
+                    attackingCoolDown = 0.4f;
+                    spriteRenderer.flipX = false;
+                }
+                if (direction == 2)
+                {
+                    playerAnim.Play("playerAttackL");
+                    attackingCoolDown = 0.4f;
+                    spriteRenderer.flipX = true;
+                }
+                if (direction == 3)
+                {
+                    playerAnim.Play("playerAttackU");
+                    attackingCoolDown = 0.4f;
+                }
+            }
         }
         else
         {
-            moveInput.x = 0; // zero out horizontal movement
-            rb2d.velocity = moveInput * moveSpeed; // Set vertical velocity
-        }
+            // Reduce the cooldown over time
+            attackingCoolDown -= Time.deltaTime;
 
-        // walking animations
-        if (moveInput.y < 0) // Down
-        {
-            playerAnim.Play("playerWalkD");
-            direction = 0;
-
-        }
-        else if (moveInput.x > 0) // Right
-        {
-            playerAnim.Play("playerWalkLR");
-            direction = 1;
-            spriteRenderer.flipX = false; // No flip for right
-        }
-        else if (moveInput.x < 0) // Left
-        {
-            playerAnim.Play("playerWalkLR");
-            direction = 2;
-            spriteRenderer.flipX = true; // Flip for left
-        }
-        else if (moveInput.y > 0) // Up
-        {
-            playerAnim.Play("playerWalkU");
-            direction = 3;
-        }
-
-        // idle animations
-        if (moveInput.y == 0 && moveInput.x == 0) // check if not moving
-        {
-            if (direction == 0) // down
-            {
-                playerAnim.Play("playerIdleD");
-            }
-            else if (direction == 1) // right
-            {
-                playerAnim.Play("playerIdleLR");
-            }
-            else if (direction == 2) // left
-            {
-                playerAnim.Play("playerIdleLR");
-            }
-            else if (direction == 3) // up
-            {
-                playerAnim.Play("playerIdleU");
-            }
+            // Stop movement during cooldown (optional)
+            rb2d.velocity = Vector2.zero;
         }
     }
 }
+
+
+
+
 
 
 
