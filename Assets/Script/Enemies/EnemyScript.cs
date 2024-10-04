@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
+    public static bool moving;
+    public GameObject Player;
     public int health;
     public float knockBackForce;
+    public float speed = 2.0f;
     public Rigidbody2D rb;
 
-    public GameObject coinPrefab; // Coin prefab to be dropped upon death
-    public int coinDropCount;     // Number of coins to drop
+    public float interactRange;
+    public bool seenPlayer;
+
+    public GameObject coinPrefab; 
+    public int coinDropCount;   
 
     // Start is called before the first frame update
     void Start()
@@ -19,13 +25,27 @@ public class EnemyScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        // check if enemy's health is 0
-        if (health <= 0)
+    {  
+        // check if the enemy is within bounds of the player or if the bool = true so the slime will chase.
+        if (Vector2.Distance(Player.transform.position, this.transform.position) < interactRange || seenPlayer == true)
         {
-            DropCoins(); // Drop coins upon defeat
-            gameObject.SetActive(false); // Disable the enemy
-            Debug.Log("Enemy defeated!");
+            seenPlayer = true;
+
+            // ensure the enemy is alive before moving.
+            if (health > 0)
+            {
+                moving = true;
+                // move towards the player.
+                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime); 
+            }
+            // check if enemy's health is 0
+            if (health <= 0)
+            {
+                moving = false;
+                DropCoins(); 
+                gameObject.SetActive(false); 
+                Debug.Log("Enemy defeated!");
+            }
         }
     }
 
@@ -34,16 +54,23 @@ public class EnemyScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Sword1") || (collision.gameObject.CompareTag("Axe1") || (collision.gameObject.CompareTag("BigSword1"))))
         {
+            seenPlayer = true;
+
+            if (health > 0)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, -100 * Time.deltaTime);
+            }
             // Check if the object has a DamageSource component
             DamageSource damageSource = collision.gameObject.GetComponent<DamageSource>();
             if (damageSource != null)
             {
                 // Apply the damage to the enemy
                 TakeDamage(damageSource.damageAmount);
-
-                // Apply knockback
-                ApplyKnockback(collision.transform.position);
             }
+
+            // change the enemy red on hit
+            gameObject.GetComponent<SpriteRenderer>().color  = Color.red;
+            StartCoroutine(whitecolor());
         }
     }
 
@@ -52,16 +79,6 @@ public class EnemyScript : MonoBehaviour
     {
         health -= (int)damage; // Reduce health by the damage amount
         Debug.Log("Enemy took " + damage + " damage! Remaining health: " + health);
-    }
-
-    // Method to apply knockback when hit
-    void ApplyKnockback(Vector2 attackPosition)
-    {
-        Vector2 knockBackDirection = (rb.position - (Vector2)attackPosition).normalized;
-
-        // Apply knockback force to the enemy's Rigidbody
-        rb.AddForce(knockBackDirection * knockBackForce, ForceMode2D.Impulse);
-        Debug.Log("Knockback applied!");
     }
 
     // Method to drop coins upon enemy defeat
@@ -74,6 +91,14 @@ public class EnemyScript : MonoBehaviour
             Instantiate(coinPrefab, dropPosition, Quaternion.identity);
         }
         Debug.Log(coinDropCount + " coins dropped!");
+    }
+
+    IEnumerator whitecolor()
+    {
+        yield return new WaitForSeconds(0.2f);
+        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = true;
     }
 }
 
