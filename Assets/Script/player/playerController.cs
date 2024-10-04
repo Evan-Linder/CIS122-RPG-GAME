@@ -1,13 +1,19 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
 public class playerScript : MonoBehaviour
 {
+    // reference variables
     private Vector2 moveInput;
     public float moveSpeed;
     public Rigidbody2D rb2d;
     public Animator playerAnim;
     public SpriteRenderer spriteRenderer;
+
+    public GameObject playerSprite;
+    public bool hurting;
+    public bool stillInEnemyRange;
 
     public int direction;
     public float attackingCoolDown;
@@ -16,9 +22,16 @@ public class playerScript : MonoBehaviour
     public GameObject axe;
     public GameObject bigSword;
 
-    public TextMeshProUGUI ActiveWeaponText; // Reference to TextMeshPro component for active weapon
-    public TextMeshProUGUI PlayerCoinText;   // Reference to TextMeshPro component for displaying coin count
-    public int coinCount; // Variable to keep track of the coin count
+    public int playerHealth;
+    public GameObject heart1;
+    public GameObject heart2;
+    public GameObject heart3;
+    public GameObject heart4;
+    public GameObject heart5;
+
+    public TextMeshProUGUI ActiveWeaponText;
+    public TextMeshProUGUI PlayerCoinText;
+    public int coinCount;
 
     void Start()
     {
@@ -173,6 +186,78 @@ public class playerScript : MonoBehaviour
             weaponInUse = -1;
             UpdateWeaponDisplay("Hands");
         }
+
+        // set hearts according to health
+        if (playerHealth == 5)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(true);
+            heart3.SetActive(true);
+            heart4.SetActive(true);
+            heart5.SetActive(true);
+        }
+        if (playerHealth == 4)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(true);
+            heart3.SetActive(true);
+            heart4.SetActive(true);
+            heart5.SetActive(false);
+        }
+        if (playerHealth == 3)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(true);
+            heart3.SetActive(true);
+            heart4.SetActive(false);
+            heart5.SetActive(false);
+        }
+        if (playerHealth == 2)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(true);
+            heart3.SetActive(false);
+            heart4.SetActive(false);
+            heart5.SetActive(false);
+        }
+        if (playerHealth == 1)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(false);
+            heart3.SetActive(false);
+            heart4.SetActive(false);
+            heart5.SetActive(false);
+        }
+    }
+    //enemy contanct / hurting
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && hurting == false && playerHealth > 0)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().color = Color.red;
+            playerHealth--;
+            StartCoroutine(whitecolor());
+            if (playerHealth > 0)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, collision.gameObject.transform.position, -70 * Time.deltaTime);
+            }
+            hurting = true;
+        }
+    }
+
+    // handle enemy hurting animations
+    IEnumerator whitecolor()
+    {
+
+        yield return new WaitForSeconds(1);
+        if (playerHealth > 0)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        hurting = false;
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = true;
+
     }
 
     // Method to update the TextMeshPro display with the current weapon
@@ -196,9 +281,10 @@ public class playerScript : MonoBehaviour
             collision.gameObject.SetActive(false); // Deactivate the coin GameObject
             UpdateCoinDisplay(); // Update the coin display when a coin is collected
         }
-    }
-}
 
+    }
+
+}
 
 
 
