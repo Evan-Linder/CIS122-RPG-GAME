@@ -128,7 +128,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 2
   knockBackForce: 0
-  rb: {fileID: 0}
+  rb: {fileID: 1557880287765971902}
+  coinPrefab: {fileID: 6991452960881007958, guid: 2858ad61c411e5c4d981a6e3bfbc10bf, type: 3}
+  coinDropCount: 2
 --- !u!61 &265559239312695250
 BoxCollider2D:
   m_ObjectHideFlags: 0

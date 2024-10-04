@@ -5,8 +5,11 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
     public int health;
-    public float knockBackForce; 
-    public Rigidbody2D rb; 
+    public float knockBackForce;
+    public Rigidbody2D rb;
+
+    public GameObject coinPrefab; // Coin prefab to be dropped upon death
+    public int coinDropCount;     // Number of coins to drop
 
     // Start is called before the first frame update
     void Start()
@@ -20,46 +23,57 @@ public class EnemyScript : MonoBehaviour
         // check if enemy's health is 0
         if (health <= 0)
         {
-            // disable the enemy if health is depleted
-            gameObject.SetActive(false);
+            DropCoins(); // Drop coins upon defeat
+            gameObject.SetActive(false); // Disable the enemy
             Debug.Log("Enemy defeated!");
         }
     }
 
-    // method to detect collision with the weapons
+    // Method to detect collision with the weapons
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Sword1") || (collision.gameObject.CompareTag("Axe1") || (collision.gameObject.CompareTag("BigSword1"))))
         {
-            // check if the object has a DamageSource component
+            // Check if the object has a DamageSource component
             DamageSource damageSource = collision.gameObject.GetComponent<DamageSource>();
             if (damageSource != null)
             {
-                // apply the damage to the enemy
+                // Apply the damage to the enemy
                 TakeDamage(damageSource.damageAmount);
 
-                //  apply knockback
+                // Apply knockback
                 ApplyKnockback(collision.transform.position);
             }
         }
     }
 
-    // method to reduce enemy's health
+    // Method to reduce enemy's health
     void TakeDamage(float damage)
     {
-        health -= (int)damage; // reduce health by the damage amount
+        health -= (int)damage; // Reduce health by the damage amount
         Debug.Log("Enemy took " + damage + " damage! Remaining health: " + health);
     }
 
-    // method to apply knockback when hit
+    // Method to apply knockback when hit
     void ApplyKnockback(Vector2 attackPosition)
     {
-
         Vector2 knockBackDirection = (rb.position - (Vector2)attackPosition).normalized;
 
-       // apply knockback force to the enemy's Rigidbody
+        // Apply knockback force to the enemy's Rigidbody
         rb.AddForce(knockBackDirection * knockBackForce, ForceMode2D.Impulse);
         Debug.Log("Knockback applied!");
+    }
+
+    // Method to drop coins upon enemy defeat
+    void DropCoins()
+    {
+        for (int i = 0; i < coinDropCount; i++)
+        {
+            // Instantiate a coin at the enemy's position
+            Vector2 dropPosition = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+            Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+        }
+        Debug.Log(coinDropCount + " coins dropped!");
     }
 }
 

@@ -16,9 +16,10 @@ public class playerScript : MonoBehaviour
     public GameObject axe;
     public GameObject bigSword;
 
-    public TextMeshProUGUI ActiveWeaponText; // Reference to TextMeshPro component
+    public TextMeshProUGUI ActiveWeaponText; // Reference to TextMeshPro component for active weapon
+    public TextMeshProUGUI PlayerCoinText;   // Reference to TextMeshPro component for displaying coin count
+    public int coinCount; // Variable to keep track of the coin count
 
-    // Initialize components
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -26,11 +27,14 @@ public class playerScript : MonoBehaviour
         // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
 
-        // set active weapon text to hands.
+        // set active weapon text to hands
         UpdateWeaponDisplay("Hands");
+
+        // Initialize coin count and update the display
+        coinCount = 0;
+        UpdateCoinDisplay();
     }
 
-    // Update is called once per frame
     void Update()
     {
         // if cooldown is over, allow movement and attacking
@@ -143,23 +147,23 @@ public class playerScript : MonoBehaviour
             sword1.SetActive(true);
             bigSword.SetActive(false);
             weaponInUse = 0;
-            UpdateWeaponDisplay("Slot1"); 
+            UpdateWeaponDisplay("Slot1");
         }
         else if (Input.GetKey(KeyCode.Alpha2))
         {
             axe.SetActive(true);
             sword1.SetActive(false);
             bigSword.SetActive(false);
-            weaponInUse = 1; 
-            UpdateWeaponDisplay("Slot2"); 
+            weaponInUse = 1;
+            UpdateWeaponDisplay("Slot2");
         }
         else if (Input.GetKey(KeyCode.Alpha3))
         {
             axe.SetActive(false);
             sword1.SetActive(false);
             bigSword.SetActive(true);
-            weaponInUse = 2; 
-            UpdateWeaponDisplay("Slot3"); 
+            weaponInUse = 2;
+            UpdateWeaponDisplay("Slot3");
         }
         else if (Input.GetKey(KeyCode.Alpha4))
         {
@@ -167,7 +171,7 @@ public class playerScript : MonoBehaviour
             axe.SetActive(false);
             bigSword.SetActive(false);
             weaponInUse = -1;
-            UpdateWeaponDisplay("Hands"); 
+            UpdateWeaponDisplay("Hands");
         }
     }
 
@@ -175,6 +179,23 @@ public class playerScript : MonoBehaviour
     void UpdateWeaponDisplay(string weapon)
     {
         ActiveWeaponText.text = "Active: " + weapon; // Update the text to reflect the selected weapon
+    }
+
+    // Method to update the coin count display in the UI
+    void UpdateCoinDisplay()
+    {
+        PlayerCoinText.text = "" + coinCount; // Display the current coin count
+    }
+
+    // Handle collision with coins
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            coinCount++; // Increment coin count
+            collision.gameObject.SetActive(false); // Deactivate the coin GameObject
+            UpdateCoinDisplay(); // Update the coin display when a coin is collected
+        }
     }
 }
 

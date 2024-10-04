@@ -24475,6 +24475,8 @@ MonoBehaviour:
   axe: {fileID: 1362333420}
   bigSword: {fileID: 237210098}
   ActiveWeaponText: {fileID: 1965672398}
+  PlayerCoinText: {fileID: 1889615270}
+  coinCount: 0
 --- !u!1 &1739782775
 GameObject:
   m_ObjectHideFlags: 0
