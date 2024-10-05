@@ -236,7 +236,7 @@ public class playerScript : MonoBehaviour
             heart4.SetActive(false);
             heart5.SetActive(false);
         }
-        if (playerHealth == 1)
+        if (playerHealth <= 0)
         {
             heart1.SetActive(false);
             heart2.SetActive(false);
