@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class playerScript : MonoBehaviour
 {
@@ -23,6 +26,7 @@ public class playerScript : MonoBehaviour
     public GameObject bigSword;
 
     public int playerHealth;
+    public Animator gameOver;
     public GameObject heart1;
     public GameObject heart2;
     public GameObject heart3;
@@ -32,6 +36,8 @@ public class playerScript : MonoBehaviour
     public TextMeshProUGUI ActiveWeaponText;
     public TextMeshProUGUI PlayerCoinText;
     public int coinCount;
+
+    public Button playAgainButton;
 
     void Start()
     {
@@ -46,6 +52,8 @@ public class playerScript : MonoBehaviour
         // Initialize coin count and update the display
         coinCount = 0;
         UpdateCoinDisplay();
+
+        playAgainButton.onClick.AddListener(PlayAgain);
     }
 
     void Update()
@@ -228,6 +236,17 @@ public class playerScript : MonoBehaviour
             heart4.SetActive(false);
             heart5.SetActive(false);
         }
+        if (playerHealth == 1)
+        {
+            heart1.SetActive(false);
+            heart2.SetActive(false);
+            heart3.SetActive(false);
+            heart4.SetActive(false);
+            heart5.SetActive(false);
+
+            gameOver.Play("gameOver");
+            gameObject.GetComponent<Animator>().speed = 0;
+        }
     }
     //enemy contanct / hurting
     public void OnCollisionEnter2D(Collision2D collision)
@@ -263,13 +282,13 @@ public class playerScript : MonoBehaviour
     // Method to update the TextMeshPro display with the current weapon
     void UpdateWeaponDisplay(string weapon)
     {
-        ActiveWeaponText.text = "Active: " + weapon; // Update the text to reflect the selected weapon
+        ActiveWeaponText.text = "Active: " + weapon; 
     }
 
     // Method to update the coin count display in the UI
     void UpdateCoinDisplay()
     {
-        PlayerCoinText.text = "" + coinCount; // Display the current coin count
+        PlayerCoinText.text = "" + coinCount; 
     }
 
     // Handle collision with coins
@@ -278,19 +297,14 @@ public class playerScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Coin"))
         {
             coinCount++; // Increment coin count
-            collision.gameObject.SetActive(false); // Deactivate the coin GameObject
-            UpdateCoinDisplay(); // Update the coin display when a coin is collected
+            collision.gameObject.SetActive(false); 
+            UpdateCoinDisplay(); 
         }
 
     }
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 }
-
-
-
-
-
-
-
-
-
