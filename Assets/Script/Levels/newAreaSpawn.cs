@@ -8,9 +8,9 @@ public class newAreaSpawn : MonoBehaviour
     public GameObject previousScene;
     public GameObject newScene;
     public GameObject mainCamera;
-
     public Animator sceneChangeAnim;
 
+    // triggered when another collider enters the trigger area
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -23,3 +23,4 @@ public class newAreaSpawn : MonoBehaviour
         }
     }
 }
+

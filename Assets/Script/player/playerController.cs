@@ -255,7 +255,7 @@ public class playerScript : MonoBehaviour
         {
             playerSprite.GetComponent<SpriteRenderer>().color = Color.red;
             playerHealth--;
-            StartCoroutine(whitecolor());
+            StartCoroutine(WhiteColor());
             if (playerHealth > 0)
             {
                 transform.position = Vector2.MoveTowards(transform.position, collision.gameObject.transform.position, -70 * Time.deltaTime);
@@ -265,9 +265,8 @@ public class playerScript : MonoBehaviour
     }
 
     // handle enemy hurting animations
-    IEnumerator whitecolor()
+    IEnumerator WhiteColor()
     {
-
         yield return new WaitForSeconds(1);
         if (playerHealth > 0)
         {
