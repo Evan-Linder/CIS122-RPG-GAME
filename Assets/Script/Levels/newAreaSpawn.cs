@@ -9,7 +9,7 @@ public class newAreaSpawn : MonoBehaviour
     public GameObject newScene;
     public GameObject mainCamera;
 
-    //public Animator sceneChangeAnim;
+    public Animator sceneChangeAnim;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,7 @@ public class newAreaSpawn : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //sceneChangeAnim.Play("switchScene");
+            sceneChangeAnim.Play("sceneChange");
             mainCamera.transform.position = spawnPoint.transform.position + new Vector3(0, 0, -10);
             other.transform.position = spawnPoint.transform.position;
             previousScene.SetActive(false);
