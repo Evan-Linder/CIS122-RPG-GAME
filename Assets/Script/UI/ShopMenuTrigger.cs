@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShopKeeperTrigger : MonoBehaviour
+public class ShopMenuTrigger : MonoBehaviour
 {
     public GameObject shopMenu; 
 

@@ -50,7 +50,6 @@ public class playerScript : MonoBehaviour
         UpdateWeaponDisplay("Hands");
 
         // Initialize coin count and update the display
-        coinCount = 0;
         UpdateCoinDisplay();
 
         playAgainButton.onClick.AddListener(PlayAgain);
@@ -285,7 +284,7 @@ public class playerScript : MonoBehaviour
     }
 
     // Method to update the coin count display in the UI
-    void UpdateCoinDisplay()
+    public void UpdateCoinDisplay()
     {
         PlayerCoinText.text = "" + coinCount; 
     }
