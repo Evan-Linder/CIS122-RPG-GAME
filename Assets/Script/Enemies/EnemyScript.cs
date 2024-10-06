@@ -52,7 +52,8 @@ public class EnemyScript : MonoBehaviour
     // Method to detect collision with the weapons
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Sword1") || (collision.gameObject.CompareTag("Axe1") || (collision.gameObject.CompareTag("BigSword1"))))
+        if (collision.gameObject.CompareTag("Sword1") || (collision.gameObject.CompareTag("Axe1") ||
+            (collision.gameObject.CompareTag("BigSword1") || (collision.gameObject.CompareTag("Hands"))))) 
         {
             seenPlayer = true;
 

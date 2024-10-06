@@ -24,6 +24,7 @@ public class playerScript : MonoBehaviour
     public GameObject sword1;
     public GameObject axe;
     public GameObject bigSword;
+    public GameObject hands;
 
     public int playerHealth;
     public Animator gameOver;
@@ -48,6 +49,7 @@ public class playerScript : MonoBehaviour
 
         // set active weapon text to hands
         UpdateWeaponDisplay("Hands");
+        hands.SetActive(true);
 
         // Initialize coin count and update the display
         UpdateCoinDisplay();
@@ -166,6 +168,7 @@ public class playerScript : MonoBehaviour
             axe.SetActive(false);
             sword1.SetActive(true);
             bigSword.SetActive(false);
+            hands.SetActive(false);
             weaponInUse = 0;
             UpdateWeaponDisplay("Slot1");
         }
@@ -174,6 +177,7 @@ public class playerScript : MonoBehaviour
             axe.SetActive(true);
             sword1.SetActive(false);
             bigSword.SetActive(false);
+            hands.SetActive(false);
             weaponInUse = 1;
             UpdateWeaponDisplay("Slot2");
         }
@@ -182,6 +186,7 @@ public class playerScript : MonoBehaviour
             axe.SetActive(false);
             sword1.SetActive(false);
             bigSword.SetActive(true);
+            hands.SetActive(false);
             weaponInUse = 2;
             UpdateWeaponDisplay("Slot3");
         }
@@ -190,6 +195,7 @@ public class playerScript : MonoBehaviour
             sword1.SetActive(false);
             axe.SetActive(false);
             bigSword.SetActive(false);
+            hands.SetActive(true);
             weaponInUse = -1;
             UpdateWeaponDisplay("Hands");
         }

@@ -10,6 +10,7 @@ TagManager:
   - BigSword1
   - Coin
   - Enemy
+  - Hands
   layers:
   - Default
   - TransparentFX
