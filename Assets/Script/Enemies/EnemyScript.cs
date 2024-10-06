@@ -70,7 +70,7 @@ public class EnemyScript : MonoBehaviour
 
             // change the enemy red on hit
             gameObject.GetComponent<SpriteRenderer>().color  = Color.red;
-            StartCoroutine(whitecolor());
+            StartCoroutine(WhiteColor());
         }
     }
 
@@ -93,7 +93,7 @@ public class EnemyScript : MonoBehaviour
         Debug.Log(coinDropCount + " coins dropped!");
     }
 
-    IEnumerator whitecolor()
+    IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(0.2f);
         gameObject.GetComponent<SpriteRenderer>().color = Color.white;
