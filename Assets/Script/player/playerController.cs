@@ -34,6 +34,8 @@ public class playerScript : MonoBehaviour
     public GameObject heart4;
     public GameObject heart5;
 
+    private WeaponShop weaponShop;
+
     public TextMeshProUGUI ActiveWeaponText;
     public TextMeshProUGUI PlayerCoinText;
     public int coinCount;
@@ -51,7 +53,6 @@ public class playerScript : MonoBehaviour
         UpdateWeaponDisplay("Hands");
         hands.SetActive(true);
 
-        // Initialize coin count and update the display
         UpdateCoinDisplay();
 
         playAgainButton.onClick.AddListener(PlayAgain);
@@ -59,6 +60,8 @@ public class playerScript : MonoBehaviour
 
     void Update()
     {
+        weaponShop = FindObjectOfType<WeaponShop>();
+
         // if cooldown is over, allow movement and attacking
         if (attackingCoolDown <= 0)
         {
@@ -166,38 +169,45 @@ public class playerScript : MonoBehaviour
         if (Input.GetKey(KeyCode.Alpha1))
         {
             axe.SetActive(false);
-            sword1.SetActive(true);
+            sword1.SetActive(false);
             bigSword.SetActive(false);
-            hands.SetActive(false);
+            hands.SetActive(true);
             weaponInUse = 0;
-            UpdateWeaponDisplay("Slot1");
+            UpdateWeaponDisplay("Hands");
         }
         else if (Input.GetKey(KeyCode.Alpha2))
         {
-            axe.SetActive(true);
-            sword1.SetActive(false);
-            bigSword.SetActive(false);
-            hands.SetActive(false);
-            weaponInUse = 1;
-            UpdateWeaponDisplay("Slot2");
-        }
-        else if (Input.GetKey(KeyCode.Alpha3))
-        {
-            axe.SetActive(false);
-            sword1.SetActive(false);
-            bigSword.SetActive(true);
-            hands.SetActive(false);
-            weaponInUse = 2;
-            UpdateWeaponDisplay("Slot3");
-        }
-        else if (Input.GetKey(KeyCode.Alpha4))
-        {
-            sword1.SetActive(false);
-            axe.SetActive(false);
-            bigSword.SetActive(false);
-            hands.SetActive(true);
-            weaponInUse = -1;
-            UpdateWeaponDisplay("Hands");
+            if (weaponShop != null && weaponShop.hasWeapon)
+            {
+                if (weaponShop.currentWeapon == "Sword")
+                {
+                    axe.SetActive(false);
+                    sword1.SetActive(true);
+                    bigSword.SetActive(false);
+                    hands.SetActive(false);
+                    weaponInUse = 1;
+                    UpdateWeaponDisplay("Sword");
+                }
+                else if (weaponShop.currentWeapon == "Axe")
+                {
+                    axe.SetActive(true);
+                    sword1.SetActive(false);
+                    bigSword.SetActive(false);
+                    hands.SetActive(false);
+                    weaponInUse = 2;
+                    UpdateWeaponDisplay("Axe");
+                }
+                else if (weaponShop.currentWeapon == "BigSword")
+                {
+                    axe.SetActive(false);
+                    sword1.SetActive(false);
+                    bigSword.SetActive(true);
+                    hands.SetActive(false);
+                    weaponInUse = 2;
+                    UpdateWeaponDisplay("Big Sword");
+                }
+            }
+            else { }
         }
 
         // set hearts according to health
@@ -284,7 +294,7 @@ public class playerScript : MonoBehaviour
     }
 
     // Method to update the TextMeshPro display with the current weapon
-    void UpdateWeaponDisplay(string weapon)
+    public void UpdateWeaponDisplay(string weapon)
     {
         ActiveWeaponText.text = "Active: " + weapon; 
     }
