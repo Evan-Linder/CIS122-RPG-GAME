@@ -25,6 +25,8 @@ public class playerScript : MonoBehaviour
     public GameObject axe;
     public GameObject bigSword;
     public GameObject hands;
+    public GameObject katana;
+    public GameObject lance;
 
     public int playerHealth;
     public Animator gameOver;
@@ -172,6 +174,8 @@ public class playerScript : MonoBehaviour
             sword1.SetActive(false);
             bigSword.SetActive(false);
             hands.SetActive(true);
+            lance.SetActive(false);
+            katana.SetActive(false);
             weaponInUse = 0;
             UpdateWeaponDisplay("Hands");
         }
@@ -185,6 +189,8 @@ public class playerScript : MonoBehaviour
                     sword1.SetActive(true);
                     bigSword.SetActive(false);
                     hands.SetActive(false);
+                    lance.SetActive(false);
+                    katana.SetActive(false);
                     weaponInUse = 1;
                     UpdateWeaponDisplay("Sword");
                 }
@@ -203,8 +209,32 @@ public class playerScript : MonoBehaviour
                     sword1.SetActive(false);
                     bigSword.SetActive(true);
                     hands.SetActive(false);
-                    weaponInUse = 2;
+                    lance.SetActive(false);
+                    katana.SetActive(false);
+                    weaponInUse = 3;
                     UpdateWeaponDisplay("Big Sword");
+                }
+                else if (weaponShop.currentWeapon == "Katana")
+                {
+                    axe.SetActive(false);
+                    sword1.SetActive(false);
+                    bigSword.SetActive(false);
+                    hands.SetActive(false);
+                    lance.SetActive(false);
+                    katana.SetActive(true);
+                    weaponInUse = 4;
+                    UpdateWeaponDisplay("Katana");
+                }
+                else if (weaponShop.currentWeapon == "Lance")
+                {
+                    axe.SetActive(false);
+                    sword1.SetActive(false);
+                    bigSword.SetActive(false);
+                    hands.SetActive(false);
+                    lance.SetActive(true);
+                    katana.SetActive(false);
+                    weaponInUse = 4;
+                    UpdateWeaponDisplay("Lance");
                 }
             }
             else { }

@@ -9,17 +9,23 @@ public class WeaponShop : MonoBehaviour
     public Button swordButton;
     public Button axeButton;
     public Button bigSwordButton;
+    public Button lanceButton;
+    public Button katanaButton;
 
     public TextMeshProUGUI weaponStatusText;
     public TextMeshProUGUI coinText;
 
-    public GameObject sword; // Reference to the sword GameObject
-    public GameObject axe; // Reference to the axe GameObject
-    public GameObject bigSword; // Reference to the big sword GameObject
+    public GameObject sword; 
+    public GameObject axe; 
+    public GameObject bigSword;
+    public GameObject katana;
+    public GameObject lance;
 
     public int swordCost = 10;
     public int axeCost = 20;
     public int bigSwordCost = 30;
+    public int katanaCost = 40;
+    public int lanceCost = 50;
 
     public string currentWeapon = "Hands";
     public bool hasWeapon = false;
@@ -41,6 +47,8 @@ public class WeaponShop : MonoBehaviour
         swordButton.onClick.AddListener(() => SelectWeapon("Sword", swordCost));
         axeButton.onClick.AddListener(() => SelectWeapon("Axe", axeCost));
         bigSwordButton.onClick.AddListener(() => SelectWeapon("BigSword", bigSwordCost));
+        lanceButton.onClick.AddListener(() => SelectWeapon("Lance", lanceCost));
+        katanaButton.onClick.AddListener(() => SelectWeapon("Katana", katanaCost));
     }
 
     void BuyWeapon()
@@ -55,7 +63,9 @@ public class WeaponShop : MonoBehaviour
         if (player.coinCount >= currentWeaponCost)
         {
             player.coinCount -= currentWeaponCost; // Update the player's coin count
-            player.weaponInUse = currentWeapon == "Sword" ? 0 : currentWeapon == "Axe" ? 1 : 2; // set current weapon
+            player.weaponInUse = currentWeapon == "Sword" ? 0 : currentWeapon == "Axe" ? 1 : currentWeapon == "BigSword" ? 2 : 
+                currentWeapon == "Lance" ? 3 : 4; // set current weapon
+
             player.UpdateCoinDisplay(); // Update the coin display in the player script
             hasWeapon = true;
 
@@ -86,6 +96,8 @@ public class WeaponShop : MonoBehaviour
         sword.SetActive(false);
         axe.SetActive(false);
         bigSword.SetActive(false);
+        katana.SetActive(false);
+        lance.SetActive(false);
 
         hasWeapon = false;
 
@@ -111,6 +123,8 @@ public class WeaponShop : MonoBehaviour
         if (currentWeapon == "Sword") return swordCost;
         if (currentWeapon == "Axe") return axeCost;
         if (currentWeapon == "BigSword") return bigSwordCost;
+        if (currentWeapon == "Katana") return katanaCost;
+        if (currentWeapon == "Lance") return lanceCost;
         return 0;
     }
 }
