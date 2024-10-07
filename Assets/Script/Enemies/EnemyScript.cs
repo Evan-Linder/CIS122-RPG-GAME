@@ -94,6 +94,8 @@ public class EnemyScript : MonoBehaviour
         Debug.Log(coinDropCount + " coins dropped!");
     }
 
+
+    // enemy hurting animations
     IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(0.2f);

@@ -309,7 +309,7 @@ public class playerScript : MonoBehaviour
         }
     }
 
-    // handle enemy hurting animations
+    // handle hurting animations
     IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(1);
@@ -340,7 +340,7 @@ public class playerScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Coin"))
         {
-            coinCount++; // Increment coin count
+            coinCount++; 
             collision.gameObject.SetActive(false); 
             UpdateCoinDisplay(); 
         }

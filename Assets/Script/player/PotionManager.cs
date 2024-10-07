@@ -109,9 +109,9 @@ public class PotionManager : MonoBehaviour
 
         if (playerController.coinCount >= potionRefillCost)
         {
-            playerController.coinCount -= potionRefillCost;  // deduct coins for potion refill
+            playerController.coinCount -= potionRefillCost;  
             Debug.Log("Potion refilled! Remaining gold: " + playerController.coinCount);
-            playerController.UpdateCoinDisplay();  // update coin display
+            playerController.UpdateCoinDisplay();  
             SetPotionState(PotionState.Full);
             DisplayMessage("Potion refilled!");
         }
@@ -135,10 +135,10 @@ public class PotionManager : MonoBehaviour
 
         if (playerController.coinCount >= totalRefillCost)
         {
-            playerController.coinCount -= totalRefillCost;  // Deduct coins for health refill
+            playerController.coinCount -= totalRefillCost;  
             Debug.Log("Health refilled to max! Remaining gold: " + playerController.coinCount);
-            playerController.UpdateCoinDisplay();  // Update coin display
-            playerController.playerHealth = 5;  // Max health
+            playerController.UpdateCoinDisplay();  
+            playerController.playerHealth = 5;  
             DisplayMessage("Health refilled!");
         }
         else

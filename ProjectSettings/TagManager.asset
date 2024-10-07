@@ -11,6 +11,8 @@ TagManager:
   - Coin
   - Enemy
   - Hands
+  - Katana1
+  - Lance1
   layers:
   - Default
   - TransparentFX
