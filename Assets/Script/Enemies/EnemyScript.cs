@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
@@ -15,7 +14,6 @@ public class EnemyScript : MonoBehaviour
     public bool seenPlayer;
     public GameObject coinPrefab;
     public int coinDropCount;
-    public float respawnTime = 15f; // Duration before the enemy respawns
 
     // Start is called before the first frame update
     void Start()
