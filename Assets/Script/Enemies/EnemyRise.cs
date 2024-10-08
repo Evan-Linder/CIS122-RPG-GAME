@@ -19,17 +19,13 @@ public class EnemyRise : MonoBehaviour
     public bool isAlive = true;
     public GameObject enemyPrefab;
     public SpriteRenderer spriteRenderer;
-
-    private int originalHealth;
     private Vector2 originalPosition;
+    private int originalHealth = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // Save the original properties of the enemy
         originalHealth = health;
         originalPosition = transform.position;
     }
@@ -37,18 +33,19 @@ public class EnemyRise : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Ensure the enemy is alive before doing anything
-        if (isAlive)
+        // Check if the enemy is within bounds of the player or if the bool = true so the slime will chase.
+        if (Vector2.Distance(Player.transform.position, this.transform.position) < interactRange || seenPlayer)
         {
-            // Check if the enemy is close to the player or if seenPlayer is true
-            if (Vector2.Distance(Player.transform.position, transform.position) < interactRange || seenPlayer)
+            seenPlayer = true;
+
+            // Ensure the enemy is alive before moving.
+            if (health > 0)
             {
-                seenPlayer = true;
                 moving = true;
+                // Move towards the player.
                 transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime);
             }
-
-            // Check if the enemy's health is 0 or less
+            // Check if enemy's health is 0
             if (health <= 0)
             {
                 moving = false;
@@ -57,23 +54,26 @@ public class EnemyRise : MonoBehaviour
                 Debug.Log("Enemy defeated!");
                 isAlive = false;
                 spriteRenderer.enabled = false;
+                GetComponent<BoxCollider2D>().enabled = false;
                 Invoke("Respawn", respawnTime);  // Respawn after delay
             }
         }
     }
 
-    // Method to detect collision with the player's weapons
+    // Method to detect collision with the weapons
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1") ||
-            collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands"))
+        if (collision.gameObject.CompareTag("Sword1") ||
+            collision.gameObject.CompareTag("Axe1") ||
+            collision.gameObject.CompareTag("BigSword1") ||
+            collision.gameObject.CompareTag("Hands"))
         {
             seenPlayer = true;
+
             if (health > 0)
             {
                 transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, -100 * Time.deltaTime);
             }
-
             // Check if the object has a DamageSource component
             DamageSource damageSource = collision.gameObject.GetComponent<DamageSource>();
             if (damageSource != null)
@@ -82,13 +82,13 @@ public class EnemyRise : MonoBehaviour
                 TakeDamage(damageSource.damageAmount);
             }
 
-            // Change the enemy to red on hit
-            spriteRenderer.color = Color.red;
+            // Change the enemy red on hit
+            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
             StartCoroutine(WhiteColor());
         }
     }
 
-    // Method to reduce the enemy's health
+    // Method to reduce enemy's health
     void TakeDamage(float damage)
     {
         health -= (int)damage; // Reduce health by the damage amount
@@ -107,11 +107,11 @@ public class EnemyRise : MonoBehaviour
         Debug.Log(coinDropCount + " coins dropped!");
     }
 
-    // Coroutine to briefly turn the enemy white after being hit
+    // Enemy hurting animations
     IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = Color.white;
+        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
     }
@@ -123,16 +123,19 @@ public class EnemyRise : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab, originalPosition, Quaternion.identity);
 
         // Reset the new enemy's health and position to the original values
-        health = originalHealth;
+        seenPlayer = false;
         isAlive = true;
+        health = originalHealth;
         spriteRenderer.color = Color.white;
         spriteRenderer.enabled = true;
         gameObject.SetActive(true);
+        GetComponent<BoxCollider2D>().enabled = true;
 
 
         Debug.Log("Enemy respawned!");
     }
 }
+
 
 
 
