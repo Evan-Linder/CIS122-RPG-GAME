@@ -44,7 +44,6 @@ public class EnemyScript : MonoBehaviour
                 moving = false;
                 DropCoins();
                 Debug.Log("Enemy defeated!");
-                StartCoroutine(Respawn()); // Start respawn coroutine
             }
         }
     }
@@ -94,16 +93,6 @@ public class EnemyScript : MonoBehaviour
             Instantiate(coinPrefab, dropPosition, Quaternion.identity);
         }
         Debug.Log(coinDropCount + " coins dropped!");
-    }
-
-    // Coroutine for handling enemy respawn
-    IEnumerator Respawn()
-    {
-        gameObject.SetActive(false); // Deactivate enemy immediately
-        yield return new WaitForSeconds(0f); // Wait for respawnTime seconds
-        health = 100; // Reset health (adjust as needed)
-        gameObject.SetActive(true); // Reactivate the enemy
-        Debug.Log("Enemy respawned!");
     }
 
     // Enemy hurting animations
