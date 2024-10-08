@@ -103,6 +103,8 @@ public class EnemyScript : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
     }
+    
 }
+
 
 
