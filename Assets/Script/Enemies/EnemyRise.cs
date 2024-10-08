@@ -53,8 +53,6 @@ public class EnemyRise : MonoBehaviour
                 gameObject.SetActive(false);
                 Debug.Log("Enemy defeated!");
                 isAlive = false;
-                spriteRenderer.enabled = false;
-                GetComponent<BoxCollider2D>().enabled = false;
                 Invoke("Respawn", respawnTime);  // Respawn after delay
             }
         }
@@ -127,11 +125,7 @@ public class EnemyRise : MonoBehaviour
         isAlive = true;
         health = originalHealth;
         spriteRenderer.color = Color.white;
-        spriteRenderer.enabled = true;
         gameObject.SetActive(true);
-        GetComponent<BoxCollider2D>().enabled = true;
-
-
         Debug.Log("Enemy respawned!");
     }
 }
