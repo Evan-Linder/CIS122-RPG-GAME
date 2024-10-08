@@ -19,5 +19,6 @@ public class Dropdown : MonoBehaviour
         List<string> listquestion = new List<string>();
         int num1 = Random.Range(0, 100);
         int num2 = Random.Range(0, 100);
+        string operatorMath = "*+-";
     }
 }
