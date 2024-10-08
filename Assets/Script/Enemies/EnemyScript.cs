@@ -13,9 +13,9 @@ public class EnemyScript : MonoBehaviour
 
     public float interactRange;
     public bool seenPlayer;
-
-    public GameObject coinPrefab; 
-    public int coinDropCount;   
+    public GameObject coinPrefab;
+    public int coinDropCount;
+    public float respawnTime = 15f; // Duration before the enemy respawns
 
     // Start is called before the first frame update
     void Start()
@@ -25,26 +25,26 @@ public class EnemyScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {  
-        // check if the enemy is within bounds of the player or if the bool = true so the slime will chase.
-        if (Vector2.Distance(Player.transform.position, this.transform.position) < interactRange || seenPlayer == true)
+    {
+        // Check if the enemy is within bounds of the player or if the bool = true so the slime will chase.
+        if (Vector2.Distance(Player.transform.position, this.transform.position) < interactRange || seenPlayer)
         {
             seenPlayer = true;
 
-            // ensure the enemy is alive before moving.
+            // Ensure the enemy is alive before moving.
             if (health > 0)
             {
                 moving = true;
-                // move towards the player.
-                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime); 
+                // Move towards the player.
+                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime);
             }
-            // check if enemy's health is 0
+            // Check if enemy's health is 0
             if (health <= 0)
             {
                 moving = false;
-                DropCoins(); 
-                gameObject.SetActive(false); 
+                DropCoins();
                 Debug.Log("Enemy defeated!");
+                StartCoroutine(Respawn()); // Start respawn coroutine
             }
         }
     }
@@ -52,8 +52,10 @@ public class EnemyScript : MonoBehaviour
     // Method to detect collision with the weapons
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Sword1") || (collision.gameObject.CompareTag("Axe1") ||
-            (collision.gameObject.CompareTag("BigSword1") || (collision.gameObject.CompareTag("Hands"))))) 
+        if (collision.gameObject.CompareTag("Sword1") ||
+            collision.gameObject.CompareTag("Axe1") ||
+            collision.gameObject.CompareTag("BigSword1") ||
+            collision.gameObject.CompareTag("Hands"))
         {
             seenPlayer = true;
 
@@ -69,8 +71,8 @@ public class EnemyScript : MonoBehaviour
                 TakeDamage(damageSource.damageAmount);
             }
 
-            // change the enemy red on hit
-            gameObject.GetComponent<SpriteRenderer>().color  = Color.red;
+            // Change the enemy red on hit
+            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
             StartCoroutine(WhiteColor());
         }
     }
@@ -94,8 +96,17 @@ public class EnemyScript : MonoBehaviour
         Debug.Log(coinDropCount + " coins dropped!");
     }
 
+    // Coroutine for handling enemy respawn
+    IEnumerator Respawn()
+    {
+        gameObject.SetActive(false); // Deactivate enemy immediately
+        yield return new WaitForSeconds(0f); // Wait for respawnTime seconds
+        health = 100; // Reset health (adjust as needed)
+        gameObject.SetActive(true); // Reactivate the enemy
+        Debug.Log("Enemy respawned!");
+    }
 
-    // enemy hurting animations
+    // Enemy hurting animations
     IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(0.2f);
@@ -103,8 +114,4 @@ public class EnemyScript : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
     }
-    
 }
-
-
-
