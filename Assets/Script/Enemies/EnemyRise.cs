@@ -42,6 +42,7 @@ public class EnemyRise : MonoBehaviour
             if (health > 0)
             {
                 moving = true;
+
                 // Move towards the player.
                 transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime);
             }
