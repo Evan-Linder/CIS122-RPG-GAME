@@ -41,6 +41,7 @@ public class EnemyScript : MonoBehaviour
             {
                 moving = false;
                 DropCoins();
+                gameObject.SetActive(false);
                 Debug.Log("Enemy defeated!");
             }
         }
