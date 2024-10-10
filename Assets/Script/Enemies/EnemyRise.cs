@@ -21,7 +21,6 @@ public class EnemyRise : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     private Vector2 originalPosition;
     private int originalHealth = 0;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +54,7 @@ public class EnemyRise : MonoBehaviour
                 Debug.Log("Enemy defeated!");
                 isAlive = false;
                 Invoke("Respawn", respawnTime);  // Respawn after delay
+                
             }
         }
     }
