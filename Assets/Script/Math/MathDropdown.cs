@@ -53,6 +53,26 @@ public class MathDropdown : MonoBehaviour
                 myQuestions.Add(key, i + " * " + randomnumbermul);
             }
         }
+        for (int i = 10; i < 20; i++)
+        {
+            int randomnumber1 = Random.Range(0, 10);
+            int randomnumber2 = Random.Range(10, 20);
+            int key = i + randomnumber2 - randomnumber1;
+            if (!myQuestions.ContainsKey(key))
+            {
+                myQuestions.Add(key, i + " + " + randomnumber2 + " - " + randomnumber1);
+            }
+        }
+        for (int i = 1; i < 10; i++)
+        {
+            int randomnumber1 = Random.Range(1, 10);
+            int randomnumber2 = Random.Range(10, 20);
+            int key = i * randomnumber1 + randomnumber2;
+            if (!myQuestions.ContainsKey(key))
+            {
+                myQuestions.Add(key, i + " * " + randomnumber1 + " + " + randomnumber2);
+            }
+        }
     }
 
     // Show the question panel and display a random math question
