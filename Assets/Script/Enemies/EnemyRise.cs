@@ -1,13 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro; // For TextMeshPro
+using TMPro; 
 
 public class EnemyRise : MonoBehaviour
 {
     public static bool moving;
     public GameObject Player;
-    public int health = 4;  // Default health
+    public int health = 4;  
     public float knockBackForce;
     public float speed = 2.0f;
     public Rigidbody2D rb;
@@ -20,11 +19,17 @@ public class EnemyRise : MonoBehaviour
     public bool isAlive = true;
     public GameObject enemyPrefab;
     public SpriteRenderer spriteRenderer;
+
+
+    public MathDropdown mathScript;
+
+ 
+    private Animator enemyAnim;
     private Vector2 originalPosition;
     private int originalHealth = 0;
 
-    // Reference to the QuestionManager
-    public MathDropdown mathScript;
+
+    private int direction = -1; // -1 means idle
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +37,7 @@ public class EnemyRise : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         originalHealth = health;
         originalPosition = transform.position;
+        enemyAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -44,7 +50,8 @@ public class EnemyRise : MonoBehaviour
             if (health > 0)
             {
                 moving = true;
-                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime);
+                MoveTowardsPlayer();
+                UpdateAnimation();
             }
 
             if (health <= 0)
@@ -53,7 +60,96 @@ public class EnemyRise : MonoBehaviour
                 gameObject.SetActive(false);
                 isAlive = false;
 
-                mathScript.ShowQuestionPanel(); // Call the QuestionManager to show the panel
+                mathScript.ShowQuestionPanel(); 
+            }
+        }
+        else
+        {
+            moving = false;
+            UpdateIdleAnimation();
+        }
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        Vector2 moveDirection = (Player.transform.position - transform.position).normalized;
+        rb.velocity = moveDirection * speed;
+
+        // Set direction based on movement
+        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
+        {
+            if (moveDirection.x > 0)
+            {
+                direction = 1; // Right
+            }
+            else
+            {
+                direction = 2; // Left
+            }
+        }
+        else
+        {
+            if (moveDirection.y > 0)
+            {
+                direction = 3; // Up
+            }
+            else
+            {
+                direction = 0; // Down
+            }
+        }
+    }
+
+    private void UpdateAnimation()
+    {
+        // Walking animations
+        if (direction == 0) // down
+        {
+            enemyAnim.Play("enemyWalkD");
+        }
+        else if (direction == 1) // right
+        {
+            enemyAnim.Play("enemyWalkLR");
+            spriteRenderer.flipX = false;
+        }
+        else if (direction == 2) // left
+        {
+            enemyAnim.Play("enemyWalkLR");
+            spriteRenderer.flipX = true;
+        }
+        else if (direction == 3) // up
+        {
+            enemyAnim.Play("enemyWalkU");
+        }
+    }
+
+    private void UpdateIdleAnimation()
+    {
+        // Idle animations
+        if (direction == 0) // down
+        {
+            enemyAnim.Play("enemyIdleD");
+        }
+        else if (direction == 1) // right
+        {
+            enemyAnim.Play("enemyIdleLR");
+            spriteRenderer.flipX = false;
+        }
+        else if (direction == 2) // left
+        {
+            enemyAnim.Play("enemyIdleLR");
+            spriteRenderer.flipX = true;
+        }
+        else if (direction == 3) // up
+        {
+            enemyAnim.Play("enemyIdleU");
+        }
+        else
+        {
+            
+            if (direction == -1)
+            {
+                enemyAnim.Play("enemyIdleD"); // Default to down idle
             }
         }
     }
