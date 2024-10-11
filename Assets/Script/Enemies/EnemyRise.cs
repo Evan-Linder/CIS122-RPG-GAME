@@ -24,7 +24,7 @@ public class EnemyRise : MonoBehaviour
     private int originalHealth = 0;
 
     // Reference to the QuestionManager
-    public QuestionManager questionManager;
+    public MathDropdown mathScript;
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +53,7 @@ public class EnemyRise : MonoBehaviour
                 gameObject.SetActive(false);
                 isAlive = false;
 
-                questionManager.ShowQuestionPanel(); // Call the QuestionManager to show the panel
+                mathScript.ShowQuestionPanel(); // Call the QuestionManager to show the panel
             }
         }
     }
