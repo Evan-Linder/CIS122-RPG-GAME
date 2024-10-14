@@ -20,6 +20,7 @@ public class playerScript : MonoBehaviour
 
     public int direction;
     public float attackingCoolDown;
+    public float miningCoolDown;
     public int weaponInUse;
     public GameObject sword1;
     public GameObject axe;
@@ -159,6 +160,31 @@ public class playerScript : MonoBehaviour
                     attackingCoolDown = 0.4f;
                 }
             }
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                if (direction == 0)
+                {
+                    playerAnim.Play("playerMineD");
+                    attackingCoolDown = 0.6f;
+                }
+                if (direction == 1)
+                {
+                    playerAnim.Play("playerMineR");
+                    attackingCoolDown = 0.6f;
+                    spriteRenderer.flipX = false;
+                }
+                if (direction == 2)
+                {
+                    playerAnim.Play("playerMineL");
+                    attackingCoolDown = 0.6f;
+                    spriteRenderer.flipX = true;
+                }
+                if (direction == 3)
+                {
+                    playerAnim.Play("playerMineU");
+                    attackingCoolDown = 0.6f;
+                }
+            }
         }
         else
         {
@@ -166,6 +192,7 @@ public class playerScript : MonoBehaviour
             attackingCoolDown -= Time.deltaTime;
             rb2d.velocity = Vector2.zero; // stop movement
         }
+
 
         // Changing weapons
         if (Input.GetKey(KeyCode.Alpha1))

@@ -13,6 +13,7 @@ TagManager:
   - Hands
   - Katana1
   - Lance1
+  - PickAxe
   layers:
   - Default
   - TransparentFX
