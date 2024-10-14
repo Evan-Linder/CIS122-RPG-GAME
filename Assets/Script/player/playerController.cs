@@ -40,8 +40,14 @@ public class playerScript : MonoBehaviour
     private WeaponShop weaponShop;
 
     public TextMeshProUGUI ActiveWeaponText;
-    public TextMeshProUGUI PlayerCoinText;
+    public TextMeshProUGUI playerCoinText;
+    public TextMeshProUGUI playerDiamondText;
+    public TextMeshProUGUI playerIronOreText;
+    public TextMeshProUGUI playerCrystalText;
     public int coinCount;
+    public int ironCount = 0;
+    public int diamondCount = 0;
+    public int crystalCount = 0;
 
     public Button playAgainButton;
 
@@ -57,6 +63,9 @@ public class playerScript : MonoBehaviour
         hands.SetActive(true);
 
         UpdateCoinDisplay();
+        UpdateDiamondDisplay();
+        UpdateIronOreDisplay();
+        UpdateCrystalDisplay();
 
         playAgainButton.onClick.AddListener(PlayAgain);
     }
@@ -359,7 +368,19 @@ public class playerScript : MonoBehaviour
     // Method to update the coin count display in the UI
     public void UpdateCoinDisplay()
     {
-        PlayerCoinText.text = "" + coinCount; 
+        playerCoinText.text = "" + coinCount; 
+    }
+    public void UpdateDiamondDisplay()
+    {
+        playerDiamondText.text = "" + diamondCount;
+    }
+    public void UpdateIronOreDisplay()
+    {
+        playerIronOreText.text = "" + ironCount;
+    }
+    public void UpdateCrystalDisplay()
+    {
+        playerCrystalText.text = "" + crystalCount;
     }
 
     // Handle collision with coins
@@ -370,6 +391,24 @@ public class playerScript : MonoBehaviour
             coinCount++; 
             collision.gameObject.SetActive(false); 
             UpdateCoinDisplay(); 
+        }
+        if (collision.gameObject.CompareTag("DiamondMaterial"))
+        {
+            diamondCount++;
+            collision.gameObject.SetActive(false);
+            UpdateDiamondDisplay();
+        }
+        if (collision.gameObject.CompareTag("IronMaterial"))
+        {
+            ironCount++;
+            collision.gameObject.SetActive(false);
+            UpdateIronOreDisplay();
+        }
+        if (collision.gameObject.CompareTag("CrystalMaterial"))
+        {
+            crystalCount++;
+            collision.gameObject.SetActive(false);
+            UpdateCrystalDisplay();
         }
 
     }
