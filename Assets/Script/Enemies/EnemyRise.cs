@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using TMPro; 
+using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 
 public class EnemyRise : MonoBehaviour
 {
@@ -60,7 +61,9 @@ public class EnemyRise : MonoBehaviour
                 gameObject.SetActive(false);
                 isAlive = false;
 
-                mathScript.ShowQuestionPanel(); 
+                mathScript.ShowQuestionPanel();
+                WaitForRespawn();
+                Respawn();
             }
         }
         else
@@ -205,6 +208,10 @@ public class EnemyRise : MonoBehaviour
         health = originalHealth;
         spriteRenderer.color = Color.white;
         gameObject.SetActive(true);
+    }
+    IEnumerator WaitForRespawn()
+    {
+        yield return new WaitForSeconds(10f);
     }
 }
 
