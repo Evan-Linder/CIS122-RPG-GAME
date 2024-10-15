@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class playerScript : MonoBehaviour
 {
     // reference variables
+    private SoundEffectManager sound;
     private Vector2 moveInput;
     public float moveSpeed;
     public Rigidbody2D rb2d;
@@ -51,9 +52,12 @@ public class playerScript : MonoBehaviour
 
     public Button playAgainButton;
 
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+
+        sound = GameObject.FindObjectOfType<SoundEffectManager>();
 
         // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
@@ -334,6 +338,7 @@ public class playerScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && hurting == false && playerHealth > 0)
         {
+            sound.PlayPlayerHitSound();
             playerSprite.GetComponent<SpriteRenderer>().color = Color.red;
             playerHealth--;
             StartCoroutine(WhiteColor());
@@ -390,7 +395,9 @@ public class playerScript : MonoBehaviour
         {
             coinCount++; 
             collision.gameObject.SetActive(false); 
-            UpdateCoinDisplay(); 
+            UpdateCoinDisplay();
+            sound.PlayGoldPickUpSound();
+
         }
         if (collision.gameObject.CompareTag("DiamondMaterial"))
         {

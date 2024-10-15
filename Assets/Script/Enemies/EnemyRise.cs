@@ -21,7 +21,7 @@ public class EnemyRise : MonoBehaviour
     public GameObject enemyPrefab;
     public SpriteRenderer spriteRenderer;
 
-
+    private SoundEffectManager sound;
     public MathDropdown mathScript;
 
  
@@ -39,6 +39,7 @@ public class EnemyRise : MonoBehaviour
         originalHealth = health;
         originalPosition = transform.position;
         enemyAnim = GetComponent<Animator>();
+        sound = GameObject.FindObjectOfType<SoundEffectManager>();
     }
 
     // Update is called once per frame
@@ -57,11 +58,14 @@ public class EnemyRise : MonoBehaviour
 
             if (health <= 0)
             {
+
+                sound.PlayEnemyDieSound();
                 moving = false;
                 gameObject.SetActive(false);
                 isAlive = false;
                 mathScript.ShowQuestionPanel();
                 Invoke("Respawn", respawnTime);
+               
                 
             }
         }
@@ -160,6 +164,7 @@ public class EnemyRise : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1")|| collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands"))
         {
+            sound.PlayEnemyHitSound();
             seenPlayer = true;
 
             if (health > 0)
