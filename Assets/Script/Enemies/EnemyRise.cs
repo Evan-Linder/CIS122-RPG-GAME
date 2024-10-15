@@ -61,7 +61,7 @@ public class EnemyRise : MonoBehaviour
                 gameObject.SetActive(false);
                 isAlive = false;
                 mathScript.ShowQuestionPanel();
-                Respawn();
+                Invoke("Respawn", respawnTime);
                 
             }
         }
@@ -206,7 +206,9 @@ public class EnemyRise : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab, originalPosition, Quaternion.identity);
         health = originalHealth;
         spriteRenderer.color = Color.white;
+        seenPlayer = false;
         Debug.Log("New enemy is created.");
+        gameObject.SetActive(true);
     }
     IEnumerator WaitForRespawn()
     {
