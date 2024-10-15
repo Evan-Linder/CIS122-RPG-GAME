@@ -27,7 +27,7 @@ public class EnemyRise : MonoBehaviour
  
     private Animator enemyAnim;
     private Vector2 originalPosition;
-    private int originalHealth = 0;
+    private int originalHealth = 4;
 
 
     private int direction = -1; // -1 means idle
@@ -60,10 +60,9 @@ public class EnemyRise : MonoBehaviour
                 moving = false;
                 gameObject.SetActive(false);
                 isAlive = false;
-
                 mathScript.ShowQuestionPanel();
-                WaitForRespawn();
                 Respawn();
+                
             }
         }
         else
@@ -159,7 +158,7 @@ public class EnemyRise : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1"))
+        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1")|| collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands"))
         {
             seenPlayer = true;
 
@@ -207,11 +206,11 @@ public class EnemyRise : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab, originalPosition, Quaternion.identity);
         health = originalHealth;
         spriteRenderer.color = Color.white;
-        gameObject.SetActive(true);
+        Debug.Log("New enemy is created.");
     }
     IEnumerator WaitForRespawn()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
     }
 }
 
