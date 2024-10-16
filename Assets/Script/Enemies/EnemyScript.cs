@@ -15,10 +15,21 @@ public class EnemyScript : MonoBehaviour
     public GameObject coinPrefab;
     public int coinDropCount;
 
+    public float respawnTime = 10f;
+    public Vector2 originalSpawnPosition;
+    public bool isAlive = true;
+    public SpriteRenderer spriteRenderer;
+    private Vector2 originalPosition;
+    private int originalHealth = 4;
+    private SoundEffectManager sound;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        originalHealth = health;
+        originalPosition = transform.position;
+        sound = GameObject.FindObjectOfType<SoundEffectManager>();
     }
 
     // Update is called once per frame
@@ -43,6 +54,7 @@ public class EnemyScript : MonoBehaviour
                 DropCoins();
                 gameObject.SetActive(false);
                 Debug.Log("Enemy defeated!");
+                Invoke("Respawn", respawnTime);
             }
         }
     }
@@ -101,5 +113,13 @@ public class EnemyScript : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
+    }
+    void Respawn()
+    {
+        health = originalHealth;
+        spriteRenderer.color = Color.white;
+        seenPlayer = false;
+        Debug.Log("New enemy is created.");
+        gameObject.SetActive(true);
     }
 }

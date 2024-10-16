@@ -18,7 +18,6 @@ public class EnemyRise : MonoBehaviour
     public float respawnTime = 1f;
     public Vector2 originalSpawnPosition;
     public bool isAlive = true;
-    public GameObject enemyPrefab;
     public SpriteRenderer spriteRenderer;
 
     private SoundEffectManager sound;
@@ -208,16 +207,12 @@ public class EnemyRise : MonoBehaviour
     // Handle respawns
     void Respawn()
     {
-        GameObject newEnemy = Instantiate(enemyPrefab, originalPosition, Quaternion.identity);
+        //GameObject newEnemy = Instantiate(enemyPrefab, originalPosition, Quaternion.identity);
         health = originalHealth;
         spriteRenderer.color = Color.white;
         seenPlayer = false;
         Debug.Log("New enemy is created.");
         gameObject.SetActive(true);
-    }
-    IEnumerator WaitForRespawn()
-    {
-        yield return new WaitForSeconds(5f);
     }
 }
 
