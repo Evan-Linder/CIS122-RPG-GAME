@@ -10,8 +10,14 @@ public class SoundEffectManager : MonoBehaviour
     public AudioClip playerHitSound;
     public AudioClip enemyDieSound;
     public AudioClip goldPickupSound;
+    public AudioClip backgroundMusic;
 
     // functions to play sounds.
+    public void PlayBackgrondMusic()
+    {
+        audioSource.clip = backgroundMusic;
+        audioSource.Play();
+    }
     public void PlayEnemyHitSound()
     {
         audioSource.clip = enemyHitSound;
