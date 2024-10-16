@@ -18,7 +18,6 @@ public class ZoneLabelDisplay : MonoBehaviour
     {
         // set the zone text to the zone name and make it visible
         zoneText.text = zoneName;
-        zoneText.color = Color.red;
         zoneText.gameObject.SetActive(true);
 
         // wait for the specified duration
