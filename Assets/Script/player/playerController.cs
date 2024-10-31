@@ -51,7 +51,7 @@ public class playerScript : MonoBehaviour
     public int crystalCount = 0;
 
     public Button playAgainButton;
-    PlayerActions playerActions;
+    FishingController fishingcon;
 
 
     void Start()
@@ -59,7 +59,7 @@ public class playerScript : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
 
         sound = GameObject.FindObjectOfType<SoundEffectManager>();
-        playerActions = GetComponent<PlayerActions>();
+        fishingcon = GetComponent<FishingController>();
 
         // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
@@ -80,7 +80,7 @@ public class playerScript : MonoBehaviour
     {
         weaponShop = FindObjectOfType<WeaponShop>();
 
-        if (playerActions.isFishing)
+        if (fishingcon.isFishing)
         {
             return;
         }
