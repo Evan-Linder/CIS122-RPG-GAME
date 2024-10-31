@@ -53,7 +53,7 @@ public class PlayerActions : MonoBehaviour
     private void DisplayFishingZoneMessage()
     {
         fishingZoneMessage.gameObject.SetActive(true);
-        fishingZoneMessage.text = "You must be in a fishing zone to fish!";
+        fishingZoneMessage.text = "You must be on a fishing dock to fish!";
         StartCoroutine(HideFishingZoneMessage());
     }
 
