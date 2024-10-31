@@ -51,6 +51,7 @@ public class playerScript : MonoBehaviour
     public int crystalCount = 0;
 
     public Button playAgainButton;
+    PlayerActions playerActions;
 
 
     void Start()
@@ -58,6 +59,7 @@ public class playerScript : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
 
         sound = GameObject.FindObjectOfType<SoundEffectManager>();
+        playerActions = GetComponent<PlayerActions>();
 
         // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
@@ -77,6 +79,11 @@ public class playerScript : MonoBehaviour
     void Update()
     {
         weaponShop = FindObjectOfType<WeaponShop>();
+
+        if (playerActions.isFishing)
+        {
+            return;
+        }
 
         // if cooldown is over, allow movement and attacking
         if (attackingCoolDown <= 0)

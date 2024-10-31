@@ -20,6 +20,7 @@ TagManager:
   - IronMaterial
   - DiamondMaterial
   - CrystalMaterial
+  - FishingZone
   layers:
   - Default
   - TransparentFX
