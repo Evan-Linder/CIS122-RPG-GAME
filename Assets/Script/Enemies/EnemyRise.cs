@@ -161,7 +161,7 @@ public class EnemyRise : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1")|| collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands"))
+        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1")|| collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands") || collision.gameObject.CompareTag("FireBall"))
         {
             sound.PlayEnemyHitSound();
             seenPlayer = true;

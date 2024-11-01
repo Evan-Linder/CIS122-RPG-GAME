@@ -10,7 +10,7 @@ public class FireBall : MonoBehaviour
     void Start()
     {
         // Destroy the fireball after 5 seconds to prevent it from existing indefinitely
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 0.8f);
     }
 
     void Update()
