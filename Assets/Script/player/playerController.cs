@@ -52,6 +52,7 @@ public class playerScript : MonoBehaviour
 
     public Button playAgainButton;
     FishingController fishingcon;
+    PlayerAbility playerAbility;
 
 
     void Start()
@@ -60,6 +61,7 @@ public class playerScript : MonoBehaviour
 
         sound = GameObject.FindObjectOfType<SoundEffectManager>();
         fishingcon = GetComponent<FishingController>();
+        playerAbility = GetComponent<PlayerAbility>();
 
         // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
@@ -81,6 +83,10 @@ public class playerScript : MonoBehaviour
         weaponShop = FindObjectOfType<WeaponShop>();
 
         if (fishingcon.isFishing)
+        {
+            return;
+        }
+        if (playerAbility.abilityActive)
         {
             return;
         }

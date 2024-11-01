@@ -65,7 +65,8 @@ public class EnemyScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Sword1") ||
             collision.gameObject.CompareTag("Axe1") ||
             collision.gameObject.CompareTag("BigSword1") ||
-            collision.gameObject.CompareTag("Hands"))
+            collision.gameObject.CompareTag("Hands")     ||
+            collision.gameObject.CompareTag("FireBall"))
         {
             seenPlayer = true;
 
