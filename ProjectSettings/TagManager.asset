@@ -24,6 +24,14 @@ TagManager:
   - FishingZone1
   - FishingZone2
   - FishingZone3
+  - Blob1
+  - DeathVader
+  - Goldie
+  - Guppie
+  - Nemo
+  - Phil
+  - Zebrilla
+  - GreenCatfish
   layers:
   - Default
   - TransparentFX

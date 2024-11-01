@@ -395,7 +395,7 @@ public class playerScript : MonoBehaviour
         playerCrystalText.text = "" + crystalCount;
     }
 
-    // Handle collision with coins
+    // Handle collision with objects
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Coin"))

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class FishingController : MonoBehaviour
 {
@@ -14,6 +15,26 @@ public class FishingController : MonoBehaviour
     public GameObject[] zone1Fish;
     public GameObject[] zone2Fish;
     public GameObject[] zone3Fish;
+
+    public TextMeshProUGUI guppieText;
+    public TextMeshProUGUI nemoText;
+    public TextMeshProUGUI zebrillaText;
+    public TextMeshProUGUI greenCatfishText;
+    public TextMeshProUGUI deathVaderText;
+    public TextMeshProUGUI goldieText;
+    public TextMeshProUGUI blobText;
+    public TextMeshProUGUI philText;
+
+    public int guppieCount;
+    public int nemoCount;
+    public int zebrillaCount;
+    public int greenCatfishCount;
+    public int deathVaderCount;
+    public int goldieCount;
+    public int blobCount;
+    public int philCount;
+
+
 
     playerScript playerCon;
 
@@ -72,24 +93,110 @@ public class FishingController : MonoBehaviour
     }
 
     // Trigger detection to check if player enters or exits the fishing zone
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("FishingZone1"))
+        if (collision.CompareTag("FishingZone1"))
         {
             inFishingZone = true;
             currentZone = "FishingZone1";
         }
-        else if (other.CompareTag("FishingZone2"))
+        else if (collision.CompareTag("FishingZone2"))
         {
             inFishingZone = true;
             currentZone = "FishingZone2";
         }
-        else if (other.CompareTag("FishingZone3"))
+        else if (collision.CompareTag("FishingZone3"))
         {
             inFishingZone = true;
             currentZone = "FishingZone3";
         }
+        if (collision.gameObject.CompareTag("Blob1"))
+        {
+            collision.gameObject.SetActive(false);
+            blobCount++;
+            UpdateBlobDisplay();
+        }
+        if (collision.gameObject.CompareTag("DeathVader"))
+        {
+            collision.gameObject.SetActive(false);
+            deathVaderCount++;
+            UpdateDeathVaderDisplay();
+        }
+        if (collision.gameObject.CompareTag("Goldie"))
+        {
+            collision.gameObject.SetActive(false);
+            goldieCount++;
+            UpdateGoldieDisplay();
+        }
+        if (collision.gameObject.CompareTag("Guppie"))
+        {
+            collision.gameObject.SetActive(false);
+            guppieCount++; 
+            UpdateGuppieDisplay();
+        }
+        if (collision.gameObject.CompareTag("Nemo"))
+        {
+            collision.gameObject.SetActive(false);
+            nemoCount++;
+            UpdateNemoDisplay();
+        }
+        if (collision.gameObject.CompareTag("Phil"))
+        {
+            collision.gameObject.SetActive(false);
+            philCount++;
+            UpdatePhilDisplay();
+        }
+        if (collision.gameObject.CompareTag("Zebrilla"))
+        {
+            collision.gameObject.SetActive(false);
+            zebrillaCount++;
+            UpdateZebrillaDisplay();
+        }
+        if (collision.gameObject.CompareTag("GreenCatfish"))
+        {
+            collision.gameObject.SetActive(false);
+            greenCatfishCount++;
+            UpdateGreenCatFishDisplay();
+        }
     }
+
+    public void UpdateNemoDisplay()
+    {
+        nemoText.text = "" + nemoCount;
+    }
+    public void UpdateGuppieDisplay()
+    {
+        guppieText.text = "" + guppieCount;
+    }
+    public void UpdateZebrillaDisplay()
+    {
+        zebrillaText.text = "" + zebrillaCount;
+    }
+    public void UpdateCrystalDisplay()
+    {
+        greenCatfishText.text = "" + greenCatfishCount;
+    }
+    public void UpdateBlobDisplay()
+    {
+        blobText.text = "" + blobCount;
+    }
+    public void UpdatePhilDisplay()
+    {
+        philText.text = "" + philCount;
+    }
+    public void UpdateDeathVaderDisplay()
+    {
+        deathVaderText.text = "" + deathVaderCount;
+    }
+    public void UpdateGoldieDisplay()
+    {
+        goldieText.text = "" + goldieCount;
+    }
+    public void UpdateGreenCatFishDisplay()
+    {
+        greenCatfishText.text = "" + greenCatfishCount;
+    }
+
 
     private void OnTriggerExit2D(Collider2D other)
     {
