@@ -24,7 +24,7 @@ public class PlayerAbility : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && !abilityActive)
+        if (Input.GetKeyDown(KeyCode.Z) && !abilityActive)
         {
             rb2d.velocity = Vector2.zero; // stop movement
             if (player.direction == 0)
