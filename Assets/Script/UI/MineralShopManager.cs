@@ -36,8 +36,21 @@ public class MineralShopManager : MonoBehaviour
     // Method to handle mineral selection
     private void SelectMineral(string mineral)
     {
+        int currentTotal = 0;
         selectedMineral = mineral;
-        DisplayMessage(mineral + " selected");
+        if (selectedMineral == "Diamond")
+        {
+             currentTotal = playerController.diamondCount;
+        }
+        else if (selectedMineral == "Iron")
+        {
+             currentTotal = playerController.ironCount;
+        }
+        else if (selectedMineral == "Crystal")
+        {
+             currentTotal = playerController.crystalCount;
+        }
+        DisplayMessage(mineral + " selected\n" + $"Owned Amount: {currentTotal}");
     }
 
     // Method to handle selling the selected mineral
