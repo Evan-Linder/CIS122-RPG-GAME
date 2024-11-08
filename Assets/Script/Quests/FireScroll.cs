@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class FireScroll : MonoBehaviour
 {
-    QuestController questController;
+    QuestController1 questController;
 
 
     void Start()
     {
         // Find the QuestController on the player or another object
-        questController = FindObjectOfType<QuestController>(); 
+        questController = FindObjectOfType<QuestController1>(); 
     }
 
     // handle collisions with quest object

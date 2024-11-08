@@ -16,8 +16,11 @@ public class playerScript : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     public GameObject playerSprite;
+    public GameObject scene1;
+    public GameObject scene2;
     public bool hurting;
     public bool stillInEnemyRange;
+    
 
     public int direction;
     public float attackingCoolDown;
@@ -55,6 +58,8 @@ public class playerScript : MonoBehaviour
     PlayerAbility playerAbility;
     HorseRiding horseRiding;
 
+    QuestController2 questController;
+
 
     void Start()
     {
@@ -64,6 +69,7 @@ public class playerScript : MonoBehaviour
         fishingcon = GetComponent<FishingController>();
         playerAbility = GetComponent<PlayerAbility>();
         horseRiding = GetComponent<HorseRiding>();
+        questController = FindObjectOfType<QuestController2>();
 
         // target the child SpriteRenderer with the visible sprite
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
@@ -347,8 +353,10 @@ public class playerScript : MonoBehaviour
             heart3.SetActive(false);
             heart4.SetActive(false);
             heart5.SetActive(false);
-
+            scene1.SetActive(false);
+            scene2.SetActive(false);
             gameOver.Play("gameOver");
+            
             gameObject.GetComponent<Animator>().speed = 0;
         }
     }
@@ -417,6 +425,13 @@ public class playerScript : MonoBehaviour
             UpdateCoinDisplay();
             sound.PlayGoldPickUpSound();
 
+        }
+
+        if (collision.gameObject.CompareTag("SilverCup"))
+        {
+            collision.gameObject.SetActive(false);
+            sound.PlayGoldPickUpSound();
+            questController.hasItem = true;
         }
         if (collision.gameObject.CompareTag("DiamondMaterial"))
         {

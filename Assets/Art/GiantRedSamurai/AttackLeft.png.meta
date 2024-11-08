@@ -173,7 +173,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: AttackLeft_0
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 13
+        width: 57
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efb00006ac1347d42b0b9beae68c82bd
+      internalID: -1321469608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackLeft_1
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 13
+        width: 55
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80dcd0372737bc74693f7059441fd80c
+      internalID: 93716912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackLeft_2
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 16
+        width: 55
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bfe90dc3bff5ae408ee9bc74d9435a5
+      internalID: 637372780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackLeft_3
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 16
+        width: 55
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a87e99f1af6df234a9217551702274ed
+      internalID: -121054691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -184,7 +268,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      AttackLeft_0: -1321469608
+      AttackLeft_1: 93716912
+      AttackLeft_2: 637372780
+      AttackLeft_3: -121054691
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
 
 public class BossScript : MonoBehaviour
 {
@@ -12,8 +10,10 @@ public class BossScript : MonoBehaviour
     public float speed = 2.0f;
     public Rigidbody2D rb;
     public float interactRange;
+    public float attackRange = 3f; // Set attack range to 3 units
     public bool seenPlayer = false;
     public GameObject coinPrefab;
+    public GameObject silverCupPrefab;
     public int coinDropCount;
     public float respawnTime = 1f;
     public Vector2 originalSpawnPosition;
@@ -21,16 +21,14 @@ public class BossScript : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     private SoundEffectManager sound;
-
-
     private Animator enemyAnim;
     private Vector2 originalPosition;
     private int originalHealth = 4;
-
-
     private int direction = -1; // -1 means idle
+    private float lastAttackTime = -Mathf.Infinity; // Track the last attack time
+    public float attackCooldown = 1.5f; // Set the cooldown duration
+    public bool isAttacking = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,9 +38,10 @@ public class BossScript : MonoBehaviour
         sound = GameObject.FindObjectOfType<SoundEffectManager>();
     }
 
-    // Update is called once per frame
     void Update()
+
     {
+        if (isAttacking) { return; }
         if (Vector2.Distance(Player.transform.position, this.transform.position) < interactRange || seenPlayer)
         {
             seenPlayer = true;
@@ -50,20 +49,29 @@ public class BossScript : MonoBehaviour
             if (health > 0)
             {
                 moving = true;
-                MoveTowardsPlayer();
-                UpdateAnimation();
+
+                // Check if player is in attack range
+                if (Vector2.Distance(Player.transform.position, transform.position) <= attackRange)
+                {
+                    CheckAttackRange();
+                    StartCoroutine(WaitToFinish());
+                }
+                else
+                {
+                    MoveTowardsPlayer();
+                    UpdateAnimation();
+                }
             }
 
             if (health <= 0)
             {
-
                 sound.PlayEnemyDieSound();
                 moving = false;
                 gameObject.SetActive(false);
                 isAlive = false;
                 Invoke("Respawn", respawnTime);
-
-
+                DropCoins();
+                DropSilverCup();
             }
         }
         else
@@ -78,63 +86,56 @@ public class BossScript : MonoBehaviour
         Vector2 moveDirection = (Player.transform.position - transform.position).normalized;
         rb.velocity = moveDirection * speed;
 
-        // Set direction based on movement
         if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
         {
-            if (moveDirection.x > 0)
-            {
-                direction = 1; // Right
-            }
-            else
-            {
-                direction = 2; // Left
-            }
+            direction = moveDirection.x > 0 ? 1 : 2;
         }
         else
         {
-            if (moveDirection.y > 0)
-            {
-                direction = 3; // Up
-            }
-            else
-            {
-                direction = 0; // Down
-            }
+            direction = moveDirection.y > 0 ? 3 : 0;
         }
     }
 
     private void UpdateAnimation()
     {
-        // Walking animations
-        if (direction == 0) // down
-        {
-            enemyAnim.Play("enemyWalkD");
-        }
-        else if (direction == 1) // right
-        {
-            enemyAnim.Play("enemyWalkLR");
-            spriteRenderer.flipX = false;
-        }
-        else if (direction == 2) // left
-        {
-            enemyAnim.Play("enemyWalkLR");
-            spriteRenderer.flipX = true;
-        }
-        else if (direction == 3) // up
-        {
-            enemyAnim.Play("enemyWalkU");
-        }
+        enemyAnim.Play("enemyWalk");
+        spriteRenderer.flipX = direction == 3;
     }
 
     private void UpdateIdleAnimation()
     {
-        // Idle animations
-        enemyAnim.Play("bossIdle");
+        enemyAnim.Play("enemyIdle");
+    }
+
+    private void CheckAttackRange()
+    {
+        isAttacking = true;
+        // Ensure enough time has passed since the last attack
+        if (Time.time - lastAttackTime >= attackCooldown)
+        {
+            lastAttackTime = Time.time; // Reset last attack time
+
+            Vector2 playerPosition = Player.transform.position;
+            Vector2 bossPosition = transform.position;
+
+            if (playerPosition.x > bossPosition.x)
+            {
+                enemyAnim.Play("enemyAttackR");
+                direction = 1;
+            }
+            else
+            {
+                enemyAnim.Play("enemyAttackL");
+                direction = 2;
+            }
+
+            rb.velocity = Vector2.zero;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1") || collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands"))
+        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1") || collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands") || collision.gameObject.CompareTag("FireBall"))
         {
             sound.PlayEnemyHitSound();
             seenPlayer = true;
@@ -169,6 +170,14 @@ public class BossScript : MonoBehaviour
         }
     }
 
+    public void DropSilverCup()
+    {
+
+            Vector2 dropPosition = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+            Instantiate(silverCupPrefab, dropPosition, Quaternion.identity);
+
+    }
+
     IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(0.2f);
@@ -176,11 +185,15 @@ public class BossScript : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
     }
+    IEnumerator WaitToFinish()
+    {
+        yield return new WaitForSeconds(0.4f);
+        isAttacking = false;
+    }
 
-    // Handle respawns
+
     void Respawn()
     {
-        //GameObject newEnemy = Instantiate(enemyPrefab, originalPosition, Quaternion.identity);
         health = originalHealth;
         spriteRenderer.color = Color.white;
         seenPlayer = false;
@@ -188,3 +201,4 @@ public class BossScript : MonoBehaviour
         gameObject.SetActive(true);
     }
 }
+

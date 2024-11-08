@@ -173,7 +173,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: AttackRight_0
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 13
+        width: 57
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01434b284711869478ac5b8b83be41c8
+      internalID: 86186767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackRight_1
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 13
+        width: 55
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88883de2115f73e42b0e4f97b43a993d
+      internalID: 801679456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackRight_2
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 16
+        width: 55
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b1b100c2d35694419139524ae8e4d4d
+      internalID: 816648608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackRight_3
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 16
+        width: 55
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09c6fd8f260fa194a8fa95dfbbe2008c
+      internalID: -248899141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -184,7 +268,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      AttackRight_0: 86186767
+      AttackRight_1: 801679456
+      AttackRight_2: 816648608
+      AttackRight_3: -248899141
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
