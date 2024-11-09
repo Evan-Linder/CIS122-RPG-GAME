@@ -6,7 +6,8 @@ public class ZoneLabelDisplay : MonoBehaviour
 {
     public TextMeshProUGUI zoneText;   
     public string zoneName;           
-    public float displayDuration = 3f; 
+    public float displayDuration = 3f;
+    public bool isRideAbleZone = false;
 
     void OnEnable()
     {

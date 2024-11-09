@@ -13,6 +13,7 @@ public class PlayerAbility : MonoBehaviour
     public bool abilityActive = false; 
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb2d;
+    HorseRiding HorseRiding;
 
     playerScript player;
 
@@ -20,11 +21,12 @@ public class PlayerAbility : MonoBehaviour
     {
         player = GetComponent<playerScript>();
         rb2d = GetComponent<Rigidbody2D>();
+        HorseRiding = GetComponent<HorseRiding>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !abilityActive)
+        if (Input.GetKeyDown(KeyCode.Z) && !abilityActive && HorseRiding.isRiding != true)
         {
             rb2d.velocity = Vector2.zero; // stop movement
             if (player.direction == 0)

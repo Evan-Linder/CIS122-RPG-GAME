@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class HorseRiding : MonoBehaviour
 {
@@ -12,18 +13,25 @@ public class HorseRiding : MonoBehaviour
     public Rigidbody2D rb2d;
     public int direction;
     public bool isRiding = false;
+    ZoneLabelDisplay newAreaSpawn;
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = transform.Find("playerSprite").GetComponent<SpriteRenderer>();
+        newAreaSpawn = FindObjectOfType<ZoneLabelDisplay>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        newAreaSpawn = FindObjectOfType<ZoneLabelDisplay>();
+        if  (newAreaSpawn.isRideAbleZone != true)
+        {
+            DismountHorse();
+        }
         // Toggle riding state with R key
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && newAreaSpawn.isRideAbleZone)
         {
             isRiding = !isRiding;
             if (isRiding)
@@ -111,7 +119,6 @@ public class HorseRiding : MonoBehaviour
 
     public void DismountHorse()
     {
-        rb2d.velocity = Vector2.zero;
         isRiding = false;
     }
 }
