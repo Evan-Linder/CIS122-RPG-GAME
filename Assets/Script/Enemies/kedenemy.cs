@@ -1,90 +1,239 @@
-using System.Collections.Generic;
+using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Kedenemy : MonoBehaviour
+public class Kedemeny : MonoBehaviour
 {
-    [Header("Enemy Settings")]
-    public float interactRange = 5f;
-    public float speed = 2f;
-    public int health = 100;
-    public int coinDropCount = 3;
-    public float respawnTime = 5f;
-
-    [Header("References")]
+    // Enemy-specific properties
     public GameObject Player;
+    public int health = 4;
     public GameObject coinPrefab;
-    public QuestionManager questionManager; // Reference to the QuestionManager
+    public int coinDropCount;
+    public bool isAlive = true;
+    public SpriteRenderer spriteRenderer;
+    public Rigidbody2D rb; // Reference to Rigidbody2D
+    public float attackSpeed = 2.0f; // Enemy movement speed
+    public BoxCollider2D boxCollider; // Enemy's BoxCollider2D
 
-    private int originalHealth;
-    private bool moving = false;
-    private bool seenPlayer = false;
-    private SpriteRenderer spriteRenderer;
+    // Animation-related properties
+    private Animator enemyAnim;
+    private int currentDirection = -1; // Direction: 0=Down, 1=Right, 2=Left, 3=Up
+
+    // Question-related properties
+    public GameObject questionPanel;
+    public TextMeshProUGUI questionText;
+    public Button buttonA;
+    public Button buttonB;
+    public TextMeshProUGUI feedbackText;
+
+    private string[] questions = new string[]
+    {
+        "Is the sky blue? A: Yes, B: No",
+        "Is 2+2=5? A: Yes, B: No",
+        "Is water wet? A: Yes, B: No"
+    };
+
+    private string[] correctAnswers = new string[] { "A", "B", "A" }; // Correct answers for each question
+    private int currentQuestionIndex = -1; // Set when a random question is chosen
+    private bool awaitingAnswer = false;
+    private bool attackingPlayer = false; // Flag for attacking mode
 
     void Start()
     {
-        originalHealth = health;
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        // Enemy setup
+        rb = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        enemyAnim = GetComponent<Animator>();
+
+        // Button setup
+        buttonA.onClick.AddListener(() => OnAnswerSelected("A"));
+        buttonB.onClick.AddListener(() => OnAnswerSelected("B"));
+
+        questionPanel.SetActive(false);
     }
 
     void Update()
     {
-        if ((Vector2.Distance(Player.transform.position, transform.position) < interactRange || seenPlayer) && health > 0)
+        // Move toward the player if attacking mode is enabled
+        if (attackingPlayer && isAlive)
         {
-            ChasePlayer();
+            MoveTowardsPlayer();
+            UpdateRunningAnimation();
         }
-    }
 
-    void ChasePlayer()
-    {
-        moving = true;
-        transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime);
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        // Prompt the question when the player collides with the enemy
+        if (collision.gameObject == Player && isAlive && !awaitingAnswer)
         {
-            seenPlayer = true;
-            moving = false; // Stop the enemy from moving
-            questionManager.ShowQuestion(this); // Trigger question popup and pass reference to this enemy
+            PromptQuestion();
+        }
+        if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1") || collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands") || collision.gameObject.CompareTag("FireBall"))
+        {
+            if (health > 0)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, -100 * Time.deltaTime);
+            }
+
+            DamageSource damageSource = collision.gameObject.GetComponent<DamageSource>();
+            if (damageSource != null)
+            {
+                TakeDamage(damageSource.damageAmount);
+            }
+
+            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            StartCoroutine(WhiteColor());
         }
     }
 
-    // Method to reduce health if answer is incorrect
-    public void TakeDamage(float damage)
+    private void TakeDamage(float damage)
     {
         health -= (int)damage;
-        Debug.Log("Enemy took " + damage + " damage! Remaining health: " + health);
+    }
 
-        if (health <= 0)
+    private IEnumerator WhiteColor()
+    {
+        yield return new WaitForSeconds(0.2f);
+        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = true;
+    }
+
+    private void PromptQuestion()
+    {
+        awaitingAnswer = true;
+        SelectRandomQuestion();
+        ShowQuestionPanel();
+
+        if (rb != null)
         {
-            OnDeath();
+            rb.velocity = Vector2.zero; // Stop enemy movement
         }
     }
 
-    void OnDeath()
+    private void SelectRandomQuestion()
     {
-        DropCoins();
-        gameObject.SetActive(false);
-        Debug.Log("Enemy defeated!");
-        Invoke(nameof(Respawn), respawnTime);
+        currentQuestionIndex = Random.Range(0, questions.Length); // Choose a random question
     }
 
-    void DropCoins()
+    private void ShowQuestionPanel()
     {
+        questionPanel.SetActive(true);
+        Time.timeScale = 0; // Pause the game
+
+        // Display the current question
+        questionText.text = questions[currentQuestionIndex];
+    }
+
+    private void OnAnswerSelected(string answer)
+    {
+        if (awaitingAnswer)
+        {
+            awaitingAnswer = false;
+            Time.timeScale = 1; // Resume the game
+            questionPanel.SetActive(false);
+
+            // Check if the answer is correct
+            if (answer == correctAnswers[currentQuestionIndex])
+            {
+                feedbackText.text = "Correct!";
+                feedbackText.color = Color.green;
+                HandleCorrectAnswer();
+            }
+            else
+            {
+                feedbackText.text = "Incorrect!";
+                feedbackText.color = Color.red;
+                HandleIncorrectAnswer();
+            }
+        }
+    }
+
+    private void HandleCorrectAnswer()
+    {
+        // Correct answer: Make the enemy disappear and drop coins
+        DisappearAndDropCoins();
+    }
+
+    private void HandleIncorrectAnswer()
+    {
+        // Incorrect answer: Start moving toward the player
+        attackingPlayer = true;
+
+        // Disable the trigger on the enemy's collider
+        if (boxCollider != null)
+        {
+            boxCollider.isTrigger = false;
+        }
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        if (rb != null)
+        {
+            Vector2 direction = (Player.transform.position - transform.position).normalized;
+            rb.velocity = direction * attackSpeed;
+
+            // Determine movement direction for animation
+            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            {
+                currentDirection = (direction.x > 0) ? 1 : 2; // Right or Left
+            }
+            else
+            {
+                currentDirection = (direction.y > 0) ? 3 : 0; // Up or Down
+            }
+        }
+    }
+
+    private void UpdateRunningAnimation()
+    {
+        if (enemyAnim != null)
+        {
+            switch (currentDirection)
+            {
+                case 0: // Down
+                    enemyAnim.Play("enemyWalkD");
+                    break;
+                case 1: // Right
+                    enemyAnim.Play("enemyWalkLR");
+                    spriteRenderer.flipX = false;
+                    break;
+                case 2: // Left
+                    enemyAnim.Play("enemyWalkLR");
+                    spriteRenderer.flipX = true;
+                    break;
+                case 3: // Up
+                    enemyAnim.Play("enemyWalkU");
+                    break;
+            }
+        }
+    }
+
+    private void DisappearAndDropCoins()
+    {
+        isAlive = false;
+        gameObject.SetActive(false);
+
+        // Drop coins as a reward
         for (int i = 0; i < coinDropCount; i++)
         {
-            Vector2 dropPosition = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+            float xOffset = Random.Range(-1.0f, 1.0f);
+            float yOffset = Random.Range(-1.0f, 1.0f);
+            Vector2 dropPosition = new Vector2(transform.position.x + xOffset, transform.position.y + yOffset);
+
             Instantiate(coinPrefab, dropPosition, Quaternion.identity);
         }
     }
-
-    void Respawn()
-    {
-        health = originalHealth;
-        spriteRenderer.color = Color.white;
-        seenPlayer = false;
-        gameObject.SetActive(true);
-        Debug.Log("New enemy is created.");
-    }
 }
+
+
+
+
