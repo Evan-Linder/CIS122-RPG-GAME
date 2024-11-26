@@ -31,10 +31,56 @@ public class Kedemeny : MonoBehaviour
     {
         "Is the sky blue? A: Yes, B: No",
         "Is 2+2=5? A: Yes, B: No",
-        "Is water wet? A: Yes, B: No"
+        "Is water wet? A: Yes, B: No",
+        "Is the sun a star? A: Yes, B: No",
+        "Is Earth the third planet from the Sun? A: Yes, B: No",
+        "Do humans have gills? A: Yes, B: No",
+        "Is fire cold? A: Yes, B: No",
+       "Can fish breathe underwater? A: Yes, B: No",
+       "Do birds have feathers? A: Yes, B: No",
+       "Is 10 greater than 5? A: Yes, B: No",
+       "Is the square root of 4 equal to 2? A: Yes, B: No",
+       "Is ice a liquid at room temperature? A: Yes, B: No",
+       "Do plants need sunlight to grow? A: Yes, B: No",
+       "Is the moon made of cheese? A: Yes, B: No",
+       "Can penguins fly? A: Yes, B: No",
+       "Is the Great Wall of China visible from space? A: Yes, B: No",
+       "Do elephants have trunks? A: Yes, B: No",
+       "Is water composed of hydrogen and oxygen? A: Yes, B: No",
+       "Can humans live without water for weeks? A: Yes, B: No",
+       "Does the color green result from mixing blue and yellow? A: Yes, B: No",
+       "Is the Amazon River the longest river in the world? A: Yes, B: No",
+       "Is Mount Everest the highest mountain on Earth? A: Yes, B: No",
+       "Is the capital of France Madrid? A: Yes, B: No"
     };
 
-    private string[] correctAnswers = new string[] { "A", "B", "A" }; // Correct answers for each question
+    private string[] correctAnswers = new string[] {
+        
+     "A", //The sky is blue
+     "B", // 2+2 = 4
+     "A",// water is wet 
+     "A", // The sun is a star.
+     "A", // Earth is the third planet from the Sun.
+     "B", // Humans do not have gills.
+     "B", // Fire is not cold.
+     "A", // Fish breathe underwater.
+     "A", // Birds have feathers.
+     "A", // 10 is greater than 5.
+     "A", // The square root of 4 is 2.
+     "B", // Ice is not a liquid at room temperature.
+     "A", // Plants need sunlight to grow.
+     "B", // The moon is not made of cheese.
+     "B", // Penguins cannot fly.
+     "B", // The Great Wall of China is not visible from space.
+     "A", // Elephants have trunks.
+     "A", // Water is composed of hydrogen and oxygen.
+     "B", // Humans cannot live without water for weeks.
+     "A", // Green is a result of mixing blue and yellow.
+     "B", // The Amazon River is not the longest; the Nile is longer.
+     "A", // Mount Everest is the highest mountain on Earth
+     "B"  // The capital of France is Paris, not Madrid.
+   
+     }; // Correct answers for each question
     private int currentQuestionIndex = -1; // Set when a random question is chosen
     private bool awaitingAnswer = false;
     private bool attackingPlayer = false; // Flag for attacking mode
@@ -70,7 +116,7 @@ public class Kedemeny : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Prompt the question when the player collides with the enemy
+        // Pop out a question when the player collides with the enemy
         if (collision.gameObject == Player && isAlive && !awaitingAnswer)
         {
             PromptQuestion();
@@ -88,23 +134,50 @@ public class Kedemeny : MonoBehaviour
                 TakeDamage(damageSource.damageAmount);
             }
 
-            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-            StartCoroutine(WhiteColor());
+            if (gameObject.activeInHierarchy)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                StartCoroutine(FlashDamageEffect());
+            }
         }
+
+            
     }
 
     private void TakeDamage(float damage)
     {
         health -= (int)damage;
+
+        if (health <= 0)
+        {
+            //Drop coins and remmove enemy
+            DisappearAndDropCoins();
+
+
+        }
+        
+      
     }
 
-    private IEnumerator WhiteColor()
+   
+    private IEnumerator FlashDamageEffect()
     {
-        yield return new WaitForSeconds(0.2f);
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-        GetComponent<BoxCollider2D>().enabled = false;
-        GetComponent<BoxCollider2D>().enabled = true;
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.red; // Change color to indicate damage
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = Color.white; // Reset to original color
+        }
+
+        // Temporarily disable collider to prevent stacking hits
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = false;
+            yield return new WaitForSeconds(0.2f);
+            boxCollider.enabled = true;
+        }
     }
+
 
     private void PromptQuestion()
     {
@@ -160,6 +233,8 @@ public class Kedemeny : MonoBehaviour
     {
         // Correct answer: Make the enemy disappear and drop coins
         DisappearAndDropCoins();
+        
+        
     }
 
     private void HandleIncorrectAnswer()
@@ -172,6 +247,8 @@ public class Kedemeny : MonoBehaviour
         {
             boxCollider.isTrigger = false;
         }
+
+
     }
 
     private void MoveTowardsPlayer()
@@ -192,6 +269,7 @@ public class Kedemeny : MonoBehaviour
             }
         }
     }
+
 
     private void UpdateRunningAnimation()
     {
@@ -219,19 +297,23 @@ public class Kedemeny : MonoBehaviour
 
     private void DisappearAndDropCoins()
     {
-        isAlive = false;
+        isAlive = false; // mark the enemy as no longer alive 
+
+        //Disable the enemy game object 
         gameObject.SetActive(false);
 
-        // Drop coins as a reward
+        // Drop coins at the enemy's current location 
         for (int i = 0; i < coinDropCount; i++)
-        {
-            float xOffset = Random.Range(-1.0f, 1.0f);
-            float yOffset = Random.Range(-1.0f, 1.0f);
-            Vector2 dropPosition = new Vector2(transform.position.x + xOffset, transform.position.y + yOffset);
+        {  
+            Vector2 dropPosition = new Vector2(transform.position.x , transform.position.y );
 
             Instantiate(coinPrefab, dropPosition, Quaternion.identity);
         }
+       
+
     }
+
+    
 }
 
 
