@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+// written by Evan Linder
 
 [System.Serializable]
 public class Question

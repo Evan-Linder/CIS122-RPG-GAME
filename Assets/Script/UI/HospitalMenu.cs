@@ -1,3 +1,5 @@
+// written by Evan Linder
+
 using UnityEngine;
 
 public class HospitalMenu : MonoBehaviour

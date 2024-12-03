@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+// written by Evan linder
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // Make sure to include this for TextMeshPro
+using UnityEngine.UI; 
 
 public class FoodManager : MonoBehaviour
 {
@@ -11,13 +10,14 @@ public class FoodManager : MonoBehaviour
     public TextMeshProUGUI foodCountText;
     public Button purchaseFoodBtn;
     public int foodCost = 5;
-
+    SoundEffectManager sound;
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<playerScript>();
         UpdateFoodCountDisplay();
         purchaseFoodBtn.onClick.AddListener(BuyFood);
+        sound = GameObject.FindObjectOfType<SoundEffectManager>();
     }
 
     // Update is called once per frame
@@ -26,6 +26,7 @@ public class FoodManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             EatFood();
+            sound.PlayEatSound();
         }
     }
 

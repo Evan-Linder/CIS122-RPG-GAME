@@ -55,6 +55,7 @@ public class EnemyScript : MonoBehaviour
                 gameObject.SetActive(false);
                 Debug.Log("Enemy defeated!");
                 Invoke("Respawn", respawnTime);
+                sound.PlayZone1EnemyDie();
             }
         }
     }
@@ -62,6 +63,7 @@ public class EnemyScript : MonoBehaviour
     // Method to detect collision with the weapons
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        sound.PlayZone1EnemySound();
         if (collision.gameObject.CompareTag("Sword1") ||
             collision.gameObject.CompareTag("Axe1") ||
             collision.gameObject.CompareTag("BigSword1") ||

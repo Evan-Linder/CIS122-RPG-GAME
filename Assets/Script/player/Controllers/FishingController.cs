@@ -1,7 +1,9 @@
+// written by Evan Linder
+
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
+
 
 public class FishingController : MonoBehaviour
 {
@@ -37,12 +39,17 @@ public class FishingController : MonoBehaviour
 
 
     playerScript playerCon;
+    SoundEffectManager sound;
 
     void Start()
     {
         playerAnim = GetComponentInChildren<Animator>();
         fishingZoneMessage.gameObject.SetActive(false);
         playerCon = GetComponent<playerScript>();
+        sound = GameObject.FindObjectOfType<SoundEffectManager>();
+
+        UpdateBlobDisplay();
+        UpdateDeathVaderDisplay();
     }
 
     void Update()
@@ -50,6 +57,7 @@ public class FishingController : MonoBehaviour
         // Start fishing animation when F key is pressed, only if player is in the fishing zone
         if (Input.GetKeyDown(KeyCode.F) && !isFishing)
         {
+            sound.PlayFishingSound();
             if (inFishingZone)
             {
                 StartFishing();

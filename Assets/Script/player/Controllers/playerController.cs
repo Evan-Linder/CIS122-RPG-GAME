@@ -1,3 +1,5 @@
+//written by Evan Linder
+
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -175,7 +177,15 @@ public class playerScript : MonoBehaviour
             // Attacking
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (direction == 0)
+                if (weaponShop.currentWeapon == "Hands")
+                {
+                    sound.PlayPunchSound();
+                }
+                else
+                {
+                    sound.PlaySwingSound();
+                }
+                    if (direction == 0)
                 {
                     playerAnim.Play("playerAttackD");
                     attackingCoolDown = 0.4f;
@@ -200,6 +210,7 @@ public class playerScript : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
+                sound.PlayMineSound();
                 if (direction == 0)
                 {
                     playerAnim.Play("playerMineD");

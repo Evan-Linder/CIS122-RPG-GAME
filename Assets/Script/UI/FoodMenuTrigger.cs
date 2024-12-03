@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+//written by Evan Linder
 using UnityEngine;
 
 public class FoodMenuTrigger : MonoBehaviour

@@ -1,3 +1,5 @@
+// written by Evan Linder
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

@@ -1,4 +1,5 @@
-using System.Collections;
+// written by Evan Linder
+
 using TMPro;
 using UnityEngine;
 

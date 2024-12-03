@@ -1,3 +1,5 @@
+// written by Evan Linder
+
 using System.Collections;
 using UnityEngine;
 
@@ -10,7 +12,7 @@ public class BossScript : MonoBehaviour
     public float speed = 2.0f;
     public Rigidbody2D rb;
     public float interactRange;
-    public float attackRange = 3f; // Set attack range to 3 units
+    public float attackRange = 3f; 
     public bool seenPlayer = false;
     public GameObject coinPrefab;
     public GameObject silverCupPrefab;
@@ -24,10 +26,11 @@ public class BossScript : MonoBehaviour
     private Animator enemyAnim;
     private Vector2 originalPosition;
     private int originalHealth = 4;
-    private int direction = -1; // -1 means idle
-    private float lastAttackTime = -Mathf.Infinity; // Track the last attack time
-    public float attackCooldown = 1.5f; // Set the cooldown duration
+    private int direction = -1; 
+    private float lastAttackTime = -Mathf.Infinity; // track the last attack time
+    public float attackCooldown = 1.5f;
     public bool isAttacking = false;
+
 
     void Start()
     {
@@ -72,6 +75,7 @@ public class BossScript : MonoBehaviour
                 Invoke("Respawn", respawnTime);
                 DropCoins();
                 DropSilverCup();
+                sound.PlayBossDieSound();
             }
         }
         else
@@ -137,7 +141,7 @@ public class BossScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1") || collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands") || collision.gameObject.CompareTag("FireBall"))
         {
-            sound.PlayEnemyHitSound();
+            sound.PlayBossHitSound();
             seenPlayer = true;
 
             if (health > 0)
