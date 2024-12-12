@@ -3,6 +3,7 @@
 
 using UnityEngine;
 
+// checks if the player is within the math area.
 public class MathCollider : MonoBehaviour
 {
     public GameObject shopMenu;

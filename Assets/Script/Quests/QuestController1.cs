@@ -62,6 +62,7 @@ public class QuestController1 : MonoBehaviour
         }
     }
 
+    // check if the player leaves the quest collider
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

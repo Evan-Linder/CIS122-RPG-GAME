@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// handles all the functions of the mineral shop
 public class MineralShopManager : MonoBehaviour
 {
     public Button sellBtn;

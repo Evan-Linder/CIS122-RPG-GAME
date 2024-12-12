@@ -116,6 +116,7 @@ public class HorseRiding : MonoBehaviour
         }
     }
 
+    // set riding to false and cancel all horse animations.
     public void DismountHorse()
     {
         isRiding = false;

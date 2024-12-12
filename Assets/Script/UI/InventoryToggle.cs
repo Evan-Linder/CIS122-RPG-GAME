@@ -2,6 +2,7 @@
 
 using UnityEngine;
 
+// used to toggle the inventory on and off.
 public class InventoryToggle : MonoBehaviour
 {
     public GameObject inventoryPanel;

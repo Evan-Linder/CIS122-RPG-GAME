@@ -20,7 +20,7 @@ public class FireBall : MonoBehaviour
 
     void MoveFireBall()
     {
-        // move based on the direction
+        // move fireball based on the direction
         if (direction == 0) 
         {
             transform.Translate(Vector3.down * speed * Time.deltaTime);

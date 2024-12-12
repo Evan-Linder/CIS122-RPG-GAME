@@ -371,7 +371,7 @@ public class playerScript : MonoBehaviour
             gameObject.GetComponent<Animator>().speed = 0;
         }
     }
-    //enemy contanct / hurting
+    //enemy contact / hurting
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy") && hurting == false && playerHealth > 0)

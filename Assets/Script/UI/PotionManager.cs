@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// handles the potions, and the potion shop.
 public class PotionManager : MonoBehaviour
 {
     public GameObject fullPotion;

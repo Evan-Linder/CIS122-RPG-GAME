@@ -2,6 +2,7 @@
 
 using UnityEngine;
 
+// handles the colliders with the shop menu.
 public class ShopMenuTrigger : MonoBehaviour
 {
     public GameObject shopMenu; 

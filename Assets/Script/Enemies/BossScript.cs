@@ -85,6 +85,7 @@ public class BossScript : MonoBehaviour
         }
     }
 
+    // function that checks if the player is in range and moves the boss
     private void MoveTowardsPlayer()
     {
         Vector2 moveDirection = (Player.transform.position - transform.position).normalized;
@@ -100,17 +101,20 @@ public class BossScript : MonoBehaviour
         }
     }
 
+    // update the walk animations depending if the boss is moving.
     private void UpdateAnimation()
     {
         enemyAnim.Play("enemyWalk");
         spriteRenderer.flipX = direction == 3;
     }
 
+    // updates the idle animation when we want the boss to idle
     private void UpdateIdleAnimation()
     {
         enemyAnim.Play("enemyIdle");
     }
 
+    // checks if the player is within attack range of the boss.
     private void CheckAttackRange()
     {
         isAttacking = true;
@@ -137,6 +141,7 @@ public class BossScript : MonoBehaviour
         }
     }
 
+    // checks for collisions with weapons or the player
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Sword1") || collision.gameObject.CompareTag("Axe1") || collision.gameObject.CompareTag("BigSword1") || collision.gameObject.CompareTag("Hands") || collision.gameObject.CompareTag("FireBall"))
@@ -165,6 +170,7 @@ public class BossScript : MonoBehaviour
         health -= (int)damage;
     }
 
+    // function to drop coins
     public void DropCoins()
     {
         for (int i = 0; i < coinDropCount; i++)
@@ -174,6 +180,7 @@ public class BossScript : MonoBehaviour
         }
     }
 
+    // drops the silver cup quest item
     public void DropSilverCup()
     {
 
@@ -182,6 +189,7 @@ public class BossScript : MonoBehaviour
 
     }
 
+    // turns the color white when hit.
     IEnumerator WhiteColor()
     {
         yield return new WaitForSeconds(0.2f);
@@ -195,7 +203,7 @@ public class BossScript : MonoBehaviour
         isAttacking = false;
     }
 
-
+    // respawns the boss
     void Respawn()
     {
         health = originalHealth;

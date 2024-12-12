@@ -12,6 +12,7 @@ public class SceneAudioPlayer : MonoBehaviour
         PlaySceneAudio();
     }
 
+    // function to play the background music
     void PlaySceneAudio()
     {
         if (audioSource != null && sceneAudio != null)
@@ -28,6 +29,7 @@ public class SceneAudioPlayer : MonoBehaviour
         }
     }
 
+    // disable the audio source when I press the mute button.
     void OnDisable() 
     {
         if (audioSource != null)

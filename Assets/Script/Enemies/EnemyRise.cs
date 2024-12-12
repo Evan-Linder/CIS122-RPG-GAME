@@ -1,7 +1,7 @@
+// written by Hieu Pham
 using System.Collections;
 using UnityEngine;
-using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
+
 
 public class EnemyRise : MonoBehaviour
 {

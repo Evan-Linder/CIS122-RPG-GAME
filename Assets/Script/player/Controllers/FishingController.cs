@@ -167,7 +167,7 @@ public class FishingController : MonoBehaviour
             UpdateGreenCatFishDisplay();
         }
     }
-
+    // update the inventory displays.
     public void UpdateNemoDisplay()
     {
         nemoText.text = "" + nemoCount;
@@ -205,7 +205,7 @@ public class FishingController : MonoBehaviour
         greenCatfishText.text = "" + greenCatfishCount;
     }
 
-
+    // check if the player is in the fishing zone
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("FishingZone1") || other.CompareTag("FishingZone2") || other.CompareTag("FishingZone3"))
@@ -215,6 +215,7 @@ public class FishingController : MonoBehaviour
         }
     }
 
+    // function to spawn fish after the player catches one.
     private void SpawnFish()
     {
         GameObject[] fishArray = null;

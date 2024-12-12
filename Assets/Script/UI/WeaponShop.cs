@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// handles all the logic with the weapon shop.
 public class WeaponShop : MonoBehaviour
 {
     public Button buyButton;

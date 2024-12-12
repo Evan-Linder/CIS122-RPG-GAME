@@ -28,6 +28,7 @@ public class GeographyManager : MonoBehaviour
         submitBtn.onClick.AddListener(OnQuestionAnswered);
         questionPanel.SetActive(false);
 
+        // add the geography questions to the array
         myQuestions.Add(new Question("What is the capital of the United States?", "washington, d.c."));
         myQuestions.Add(new Question("What is the largest state in the U.S. by area?", "alaska"));
         myQuestions.Add(new Question("Which state is known as the 'Sunshine State'?", "florida"));

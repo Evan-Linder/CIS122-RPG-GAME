@@ -27,6 +27,7 @@ public class PlayerAbility : MonoBehaviour
 
     void Update()
     {
+        // check if the player presses Z if so, calc the direction of the player and play the animation.
         if (Input.GetKeyDown(KeyCode.Z) && !abilityActive && HorseRiding.isRiding != true)
         {
             rb2d.velocity = Vector2.zero; // stop movement
@@ -58,6 +59,7 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
+    // ends the ability animation
     private IEnumerator EndAbilityAnimation()
     {
         yield return new WaitForSeconds(1f); 
@@ -65,6 +67,7 @@ public class PlayerAbility : MonoBehaviour
         abilityActive = false;
     }
 
+    // function to shoot the fireball
     void ShootFireBall()
     {
         Transform spawnPoint = null; 

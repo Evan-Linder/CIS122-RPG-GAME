@@ -11,6 +11,7 @@ public class newAreaSpawn : MonoBehaviour
     public Animator sceneChangeAnim;
 
     // triggered when another collider enters the trigger area
+    // teleports the player from 1 box collider to the next.
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
